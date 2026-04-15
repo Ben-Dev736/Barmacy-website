@@ -727,22 +727,5 @@
         }, 500);
     }
 </script>
-
-<!-- PHP Backend Note: payment.php will receive POST data -->
-<!-- 
-    For payment.php, you would handle:
-    - cart_data (JSON string)
-    - user_data (JSON string)
-    - total_amount (number)
-    
-    Example payment.php structure:
-    <?php
-    session_start();
-    $cart_data = json_decode($_POST['cart_data'], true);
-    $user_data = json_decode($_POST['user_data'], true);
-    $total = $_POST['total_amount'];
-    // Process payment, show invoice, etc.
-    ?>
--->
 </body>
 </html>
