@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Bermacy RW | Trusted Pharmacy - Homepage</title>
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts: Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: #f4f9fc;
+            color: #1a2c3e;
+            line-height: 1.5;
+        }
+
+        /* Flash Notification Bar - Social Media Rotator */
+        .flash-bar {
+            background: #0a2f2e;
+            color: #ffecb3;
+            padding: 10px 5%;
+            text-align: center;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            overflow: hidden;
+            white-space: nowrap;
+            position: relative;
+            z-index: 10;
+        }
+        .flash-content {
+            display: inline-block;
+            transition: opacity 0.5s ease;
+        }
+        .flash-content i {
+            margin: 0 8px;
+            color: #ffb347;
+        }
+        @keyframes fadeFlash {
+            0% { opacity: 0.6; }
+            20% { opacity: 1; }
+            80% { opacity: 1; }
+            100% { opacity: 0.6; }
+        }
+
+        /* Header & Navigation */
+        .top-bar {
+            background: #0b3b3f;
+            color: white;
+            padding: 10px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .logo h1 {
+            font-size: 1.7rem;
+            letter-spacing: 1px;
+            font-weight: 700;
+        }
+        .logo span {
+            color: #9effcf;
+        }
+        .cart-icon {
+            background: #1e5f5c;
+            padding: 8px 18px;
+            border-radius: 40px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+        .cart-icon:hover {
+            background: #2c7a76;
+        }
+        .cart-count {
+            background: #ffb347;
+            color: #1e2f2f;
+            border-radius: 30px;
+            padding: 2px 10px;
+            font-weight: bold;
+        }
+        nav {
+            background: white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            padding: 12px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .nav-links a {
+            margin-right: 25px;
+            text-decoration: none;
+            color: #1f5e5a;
+            font-weight: 500;
+            transition: 0.2s;
+        }
+        .nav-links a:hover, .nav-links a.active {
+            color: #0b3b3f;
+            text-decoration: underline;
+            font-weight: 600;
+        }
+        .search-box input {
+            padding: 10px 18px;
+            border: 1px solid #cbd5e1;
+            border-radius: 40px;
+            width: 240px;
+            outline: none;
+        }
+
+        /* Hero section */
+        .hero {
+            background: linear-gradient(135deg, #d9f0ec, #c1e4df);
+            padding: 35px 5%;
+            text-align: center;
+        }
+        .hero h2 {
+            font-size: 2.2rem;
+            color: #094c47;
+        }
+        .hero p {
+            font-size: 1.1rem;
+            margin-top: 10px;
+            color: #2c5a55;
+        }
+        .page-links {
+            margin-top: 20px;
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .page-link-btn {
+            background: #1f5e5a;
+            color: white;
+            padding: 10px 24px;
+            border-radius: 40px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            border: none;
+            font-size: 1rem;
+        }
+        .page-link-btn:hover {
+            background: #0b3b3f;
+            transform: translateY(-2px);
+        }
+
+        /* product grid */
+        .container {
+            max-width: 1300px;
+            margin: 40px auto;
+            padding: 0 5%;
+        }
+        .section-title {
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+            border-left: 6px solid #2c9c8f;
+            padding-left: 18px;
+            color: #0a3b3a;
+        }
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+        }
+        .product-card {
+            background: white;
+            border-radius: 28px;
+            overflow: hidden;
+            box-shadow: 0 12px 24px rgba(0,0,0,0.05);
+            transition: transform 0.25s ease, box-shadow 0.2s;
+            position: relative;
+        }
+        .product-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 30px rgba(0,0,0,0.12);
+        }
+        
+        /* FIXED: Hover detail panel - NOW AT THE TOP (not covering the button) */
+        .product-hover-detail {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(10, 47, 46, 0.95);
+            color: white;
+            padding: 12px 15px;
+            transform: translateY(-100%);
+            transition: transform 0.3s ease;
+            font-size: 0.75rem;
+            border-radius: 28px 28px 20px 20px;
+            backdrop-filter: blur(4px);
+            z-index: 10;
+            pointer-events: none;
+        }
+        .product-card:hover .product-hover-detail {
+            transform: translateY(0);
+        }
+        
+        .product-img {
+            background: #eef3f2;
+            text-align: center;
+            padding: 30px 20px;
+            font-size: 3.5rem;
+            color: #1b7e74;
+        }
+        .product-info {
+            padding: 20px;
+            position: relative;
+            z-index: 2;
+            background: white;
+        }
+        .product-title {
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+        .product-desc {
+            color: #4b6a6b;
+            font-size: 0.85rem;
+            margin: 8px 0;
+        }
+        .price {
+            font-weight: 800;
+            font-size: 1.5rem;
+            color: #156f68;
+            margin: 12px 0;
+        }
+        .add-to-cart {
+            background: #0b5e5a;
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 12px;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            align-items: center;
+            position: relative;
+            z-index: 5;
+        }
+        .add-to-cart:hover {
+            background: #094e4a;
+        }
+        /* cart sidebar */
+        .cart-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            visibility: hidden;
+            opacity: 0;
+            transition: 0.2s;
+            display: flex;
+            justify-content: flex-end;
+        }
+        .cart-overlay.active {
+            visibility: visible;
+            opacity: 1;
+        }
+        .cart-panel {
+            background: white;
+            width: 380px;
+            height: 100%;
+            overflow-y: auto;
+            padding: 20px;
+            box-shadow: -5px 0 15px rgba(0,0,0,0.2);
+            display: flex;
+            flex-direction: column;
+        }
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #dee2e6;
+            padding-bottom: 12px;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        .close-cart {
+            cursor: pointer;
+            font-size: 1.7rem;
+        }
+        .cart-items-list {
+            flex: 1;
+            margin: 20px 0;
+        }
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .cart-item-actions button {
+            background: #e9ecef;
+            border: none;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            cursor: pointer;
+            margin: 0 3px;
+        }
+        .cart-total {
+            font-weight: 800;
+            font-size: 1.4rem;
+            border-top: 2px solid #ddd;
+            padding-top: 15px;
+            text-align: right;
+        }
+        .checkout-btn {
+            background: #2c9c8f;
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .checkout-btn:hover {
+            background: #247a70;
+            transform: translateY(-2px);
+        }
+        /* Footer */
+        footer {
+            background: #082f2e;
+            color: #e0f2f0;
+            padding: 35px 5% 25px;
+            margin-top: 60px;
+        }
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        .social-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .social-links a {
+            color: white;
+            background: #1e6b65;
+            width: 40px;
+            height: 40px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: 0.2s;
+            font-size: 1.2rem;
+            text-decoration: none;
+        }
+        .social-links a:hover {
+            background: #ffb347;
+            color: #082f2e;
+        }
+        .copyright {
+            text-align: center;
+            border-top: 1px solid #2a6b66;
+            padding-top: 20px;
+            font-size: 0.8rem;
+        }
+        .toast-msg {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: #1f5e5a;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 40px;
+            z-index: 1100;
+            font-weight: 500;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        @media (max-width: 700px) {
+            .cart-panel { width: 100%; }
+            .product-hover-detail { font-size: 0.7rem; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Flash Bar: Rotating Social Media Notifications (changes every 1 minute) -->
+<div class="flash-bar" id="flashBar">
+    <div class="flash-content" id="flashMessage">
+        <i class="fab fa-instagram"></i> 📢 Follow us on Instagram: @bermacy_rw
+    </div>
+</div>
+
+<div class="top-bar">
+    <div class="logo">
+        <h1>BERMACY <span>RW</span></h1>
+        <small>💊 Trusted Pharmacy | RWF Prices</small>
+    </div>
+    <div class="cart-icon" id="cartIconBtn">
+        <i class="fas fa-shopping-cart"></i> <span>Cart</span>
+        <span class="cart-count" id="cartCountDisplay">0</span>
+    </div>
+</div>
+
+<nav>
+    <div class="nav-links">
+        <a href="index.html" class="active">Home</a>
+        <a href="pages/Shop.html">Shop Medicines</a>
+        <a href="pages/blog.html">Health Blog</a>
+        <a href="pages/prescriptions.html">Prescriptions</a>
+        <a href="pages/contact.html">Contact</a>
+    </div>
+    <div class="search-box">
+        <input type="text" id="searchInput" placeholder="🔍 Search medicine... (e.g., Paracetamol)">
+    </div>
+</nav>
+
+<section class="hero">
+    <h2>💊 Your Health, Our Priority — Homepage</h2>
+    <p>Fast & Reliable Medicine Delivery in Rwanda — Pay in RWF (₣) | Free delivery over 25,000 RWF</p>
+    <div class="page-links">
+        <button class="page-link-btn" id="exploreShopBtn"><i class="fas fa-capsules"></i> Explore Medicines</button>
+        <button class="page-link-btn" id="blogRedirectBtn"><i class="fas fa-blog"></i> Read Health Blog</button>
+    </div>
+</section>
+
+<div class="container">
+    <div class="section-title">🔥 Essential Medicines — Hover over card for details</div>
+    <div class="products-grid" id="productsGrid"></div>
+</div>
+
+<!-- Cart Sidebar -->
+<div id="cartOverlay" class="cart-overlay">
+    <div class="cart-panel">
+        <div class="cart-header">
+            <span>🛒 Your Cart (RWF)</span>
+            <span class="close-cart" id="closeCartBtn">&times;</span>
+        </div>
+        <div id="cartItemsContainer" class="cart-items-list"><div class="empty-cart">Your cart is empty</div></div>
+        <div id="cartTotalContainer" class="cart-total">Total: 0 RWF</div>
+        <button id="checkoutBtn" class="checkout-btn">💳 Proceed to Checkout</button>
+        <p style="font-size: 0.7rem; text-align: center; margin-top: 12px;">Secure checkout | Delivery across Rwanda</p>
+    </div>
+</div>
+
+<footer>
+    <div class="footer-content">
+        <div class="footer-about">
+            <h3>Bermacy RW</h3>
+            <p>Rwanda's leading digital pharmacy delivering safe, affordable medicines. Your health is our mission.</p>
+            <div class="social-links">
+                <a href="https://instagram.com/bermacy_rw" target="_blank"><i class="fab fa-instagram"></i></a>
+                <a href="https://facebook.com/bermacy_rw" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://linkedin.com/in/bermacy_rw" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                <a href="https://whatsapp.com/channel/0029VaBermacy_rw" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                <a href="https://twitter.com/bermacy_rw" target="_blank"><i class="fab fa-twitter"></i></a>
+                <a href="https://youtube.com/c/bermacy_rw" target="_blank"><i class="fab fa-youtube"></i></a>
+                <a href="https://tiktok.com/@bermacy_rw" target="_blank"><i class="fab fa-tiktok"></i></a>
+            </div>
+        </div>
+        <div class="footer-links">
+            <h4>Quick Links</h4>
+            <ul style="list-style:none;">
+                <li><a href="shop.html" style="color:#cbd5e6;">Shop Medicines</a></li>
+                <li><a href="blog.html" style="color:#cbd5e6;">Health Blog</a></li>
+                <li><a href="prescriptions.html" style="color:#cbd5e6;">Prescriptions</a></li>
+                <li><a href="contact.html" style="color:#cbd5e6;">Contact</a></li>
+            </ul>
+        </div>
+        <div class="footer-links">
+            <h4>Contact</h4>
+            <ul style="list-style:none;">
+                <li><i class="fas fa-phone-alt"></i> +250 788 123 456</li>
+                <li><i class="fas fa-envelope"></i> care@bermacy.rw</li>
+                <li><i class="fas fa-map-marker-alt"></i> Kigali, Rwanda</li>
+            </ul>
+        </div>
+    </div>
+    <div class="copyright">
+        <p>© 2025 Bermacy RW — Selling genuine medicines in RWF only. Follow @bermacy_rw on all platforms.</p>
+    </div>
+</footer>
+
+<script>
+    // ---------- MEDICINE DATABASE (prices in RWF) with detailed usage guide ----------
+    const products = [
+        { id: 1, name: "Paracetamol 500mg", desc: "Pain & fever relief (10 tablets)", price: 1200, icon: "💊", detailedGuide: "✅ Usage: Adults: 1-2 tablets every 4-6 hours. Max 8 tablets/day. Not for long-term use without doctor. Avoid alcohol." },
+        { id: 2, name: "Ibuprofen 400mg", desc: "Anti-inflammatory (20 tablets)", price: 2500, icon: "💊", detailedGuide: "✅ Usage: Take with food. 1 tablet every 6-8 hours for pain/inflammation. Do not exceed 3 tablets/day. Contraindicated with stomach ulcers." },
+        { id: 3, name: "Amoxicillin 500mg", desc: "Antibiotic (12 capsules)", price: 3800, icon: "💊", detailedGuide: "✅ Usage: Prescription needed. Usually 1 capsule every 8-12 hours for 7 days. Complete full course. Do not skip doses." },
+        { id: 4, name: "Vitamin C + Zinc", desc: "Immune support (30 tablets)", price: 5400, icon: "🍊", detailedGuide: "✅ Usage: 1 tablet daily with meal. Boosts immunity, antioxidant. Consult if pregnant." },
+        { id: 5, name: "Omeprazole 20mg", desc: "Acid reducer (14 capsules)", price: 3600, icon: "💊", detailedGuide: "✅ Usage: 1 capsule before breakfast. For heartburn/GERD. Use max 14 days unless directed by physician." },
+        { id: 6, name: "Cetirizine 10mg", desc: "Allergy relief (10 tabs)", price: 1900, icon: "🌿", detailedGuide: "✅ Usage: 1 tablet daily. For hay fever, hives. May cause drowsiness. Avoid alcohol." },
+        { id: 7, name: "Azithromycin 500mg", desc: "Antibiotic (3 tablets)", price: 5200, icon: "💊", detailedGuide: "✅ Usage: 1 tablet daily for 3 days. Take 1 hour before or 2 hours after meal. Complete course." },
+        { id: 8, name: "Multivitamin Daily", desc: "Energy & wellness (60 tabs)", price: 8900, icon: "🥤", detailedGuide: "✅ Usage: 1 tablet daily after breakfast. Provides essential vitamins for adults. Store in cool dry place." }
+    ];
+
+    let cart = [];
+    let flashIndex = 0;
+    const socialMessages = [
+        { icon: "fab fa-instagram", text: "📸 Instagram: @bermacy_rw — Daily health tips & offers!" },
+        { icon: "fab fa-facebook-f", text: "👍 Facebook: @bermacy_rw — Join our community!" },
+        { icon: "fab fa-linkedin-in", text: "🔗 LinkedIn: bermacy_rw — Pharma insights" },
+        { icon: "fab fa-whatsapp", text: "📱 WhatsApp Channel: bermacy_rw — Get alerts" },
+        { icon: "fab fa-twitter", text: "🐦 X (Twitter): @bermacy_rw — Latest updates" },
+        { icon: "fab fa-youtube", text: "🎥 YouTube: bermacy_rw — Health videos" },
+        { icon: "fab fa-tiktok", text: "🎵 TikTok: @bermacy_rw — Fun pharma content" }
+    ];
+
+    function rotateFlashMessage() {
+        const flashDiv = document.getElementById('flashMessage');
+        if(flashDiv) {
+            const msg = socialMessages[flashIndex % socialMessages.length];
+            flashDiv.innerHTML = `<i class="${msg.icon}"></i> ${msg.text}`;
+            flashDiv.style.animation = 'fadeFlash 0.5s';
+            setTimeout(() => { if(flashDiv) flashDiv.style.animation = ''; }, 500);
+            flashIndex++;
+        }
+    }
+    setInterval(rotateFlashMessage, 60000);
+    rotateFlashMessage();
+
+    // Cart & UI functions
+    function updateCartUI() {
+        const cartCountSpan = document.getElementById('cartCountDisplay');
+        const totalQuantity = cart.reduce((sum, item) => sum + item.quantity, 0);
+        if(cartCountSpan) cartCountSpan.innerText = totalQuantity;
+        const cartContainer = document.getElementById('cartItemsContainer');
+        const cartTotalSpan = document.getElementById('cartTotalContainer');
+        if(!cartContainer) return;
+        if(cart.length === 0) {
+            cartContainer.innerHTML = '<div class="empty-cart">🛒 Your cart is empty. Add medicines!</div>';
+            if(cartTotalSpan) cartTotalSpan.innerHTML = `Total: 0 RWF`;
+            return;
+        }
+        let cartHTML = '';
+        let totalRWF = 0;
+        cart.forEach(cartItem => {
+            const product = products.find(p => p.id === cartItem.id);
+            if(!product) return;
+            const itemTotal = product.price * cartItem.quantity;
+            totalRWF += itemTotal;
+            cartHTML += `<div class="cart-item"><div><h4>${product.name}</h4><small>${product.price} RWF each</small></div>
+            <div><div>${itemTotal} RWF</div><div class="cart-item-actions">
+            <button class="decr-qty" data-id="${product.id}">-</button><span style="margin:0 6px;">${cartItem.quantity}</span>
+            <button class="incr-qty" data-id="${product.id}">+</button>
+            <button class="remove-item" data-id="${product.id}" style="background:#ffe0e0;">🗑️</button></div></div></div>`;
+        });
+        cartContainer.innerHTML = cartHTML;
+        if(cartTotalSpan) cartTotalSpan.innerHTML = `Total: ${totalRWF.toLocaleString()} RWF`;
+        document.querySelectorAll('.decr-qty').forEach(btn => btn.addEventListener('click', (e) => { let id = parseInt(btn.dataset.id); updateQuantity(id, -1); }));
+        document.querySelectorAll('.incr-qty').forEach(btn => btn.addEventListener('click', (e) => { let id = parseInt(btn.dataset.id); updateQuantity(id, 1); }));
+        document.querySelectorAll('.remove-item').forEach(btn => btn.addEventListener('click', (e) => { let id = parseInt(btn.dataset.id); removeItemCompletely(id); }));
+    }
+    function updateQuantity(productId, delta) {
+        const index = cart.findIndex(item => item.id === productId);
+        if(index !== -1) {
+            const newQty = cart[index].quantity + delta;
+            if(newQty <= 0) cart.splice(index,1);
+            else cart[index].quantity = newQty;
+        } else if(delta > 0) cart.push({ id: productId, quantity: 1 });
+        updateCartUI();
+        saveCart();
+        showToast(delta>0 ? "Cart updated" : "Item reduced");
+    }
+    function removeItemCompletely(productId) { cart = cart.filter(item => item.id !== productId); updateCartUI(); saveCart(); showToast("Item removed"); }
+    function addToCart(productId) {
+        const existing = cart.find(item => item.id === productId);
+        if(existing) existing.quantity += 1;
+        else cart.push({ id: productId, quantity: 1 });
+        updateCartUI();
+        saveCart();
+        const prod = products.find(p=>p.id===productId);
+        showToast(`✓ ${prod.name} added (${prod.price} RWF)`);
+    }
+    function saveCart() { localStorage.setItem('bermacy_cart', JSON.stringify(cart)); }
+    function loadCart() { const saved = localStorage.getItem('bermacy_cart'); if(saved) { try { cart = JSON.parse(saved); if(!Array.isArray(cart)) cart=[]; } catch(e){cart=[];} } else cart=[]; updateCartUI(); }
+
+    function showToast(msg) {
+        let toast = document.querySelector('.toast-msg');
+        if(!toast) { toast = document.createElement('div'); toast.className='toast-msg'; document.body.appendChild(toast); }
+        toast.innerText = msg; toast.style.opacity='1';
+        clearTimeout(window.toastTimeout);
+        window.toastTimeout = setTimeout(() => { if(toast) toast.style.opacity='0'; }, 2200);
+    }
+
+    // Redirect to login page while preserving cart
+    function redirectToLogin() {
+        if(cart.length === 0) {
+            showToast("Your cart is empty! Please add items before checkout.");
+            return;
+        }
+        // Save cart one more time to ensure it's persisted
+        saveCart();
+        showToast("Redirecting to secure login page...");
+        setTimeout(() => {
+            window.location.href = 'login.html';
+        }, 800);
+    }
+
+    function renderProducts(filter = "") {
+        const grid = document.getElementById('productsGrid');
+        if(!grid) return;
+        let filtered = products.filter(p => p.name.toLowerCase().includes(filter.toLowerCase()) || p.desc.toLowerCase().includes(filter.toLowerCase()));
+        if(filtered.length===0) { grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:40px;">No medicines match "${filter}"</div>`; return; }
+        grid.innerHTML = filtered.map(p => `
+            <div class="product-card" data-id="${p.id}">
+                <div class="product-hover-detail">
+                    <i class="fas fa-info-circle"></i> <strong>User Guide:</strong> ${p.detailedGuide.substring(0, 110)}...
+                </div>
+                <div class="product-img">${p.icon} <span style="font-size:0.8rem;">💊</span></div>
+                <div class="product-info">
+                    <div class="product-title">${p.name}</div>
+                    <div class="product-desc">${p.desc}</div>
+                    <div class="price">${p.price.toLocaleString()} <small>RWF</small></div>
+                    <button class="add-to-cart" data-id="${p.id}"><i class="fas fa-cart-plus"></i> Add to Cart</button>
+                </div>
+            </div>
+        `).join('');
+        document.querySelectorAll('.add-to-cart').forEach(btn => { btn.addEventListener('click', (e) => { e.stopPropagation(); addToCart(parseInt(btn.dataset.id)); }); });
+    }
+
+    // Cart Sidebar
+    const cartOverlay = document.getElementById('cartOverlay');
+    document.getElementById('cartIconBtn')?.addEventListener('click', () => { cartOverlay.classList.add('active'); updateCartUI(); });
+    document.getElementById('closeCartBtn')?.addEventListener('click', () => cartOverlay.classList.remove('active'));
+    cartOverlay?.addEventListener('click', (e) => { if(e.target === cartOverlay) cartOverlay.classList.remove('active'); });
+    
+    // CHECKOUT BUTTON - Redirects to login page while preserving cart
+    document.getElementById('checkoutBtn')?.addEventListener('click', () => {
+        redirectToLogin();
+    });
+
+    const searchInput = document.getElementById('searchInput');
+    searchInput?.addEventListener('input', (e) => renderProducts(e.target.value));
+
+    // Navigation buttons - redirect to other pages
+    document.getElementById('exploreShopBtn')?.addEventListener('click', () => {
+        window.location.href = 'shop.html';
+    });
+    document.getElementById('blogRedirectBtn')?.addEventListener('click', () => {
+        window.location.href = 'blog.html';
+    });
+
+    loadCart();
+    renderProducts("");
+    updateCartUI();
+</script>
+</body>
+</html>

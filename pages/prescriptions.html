@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Bermacy RW | Upload Prescription - Easy Medicine Refill</title>
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts: Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: #f4f9fc;
+            color: #1a2c3e;
+            line-height: 1.5;
+        }
+
+        /* Flash Notification Bar - Social Media Rotator */
+        .flash-bar {
+            background: #0a2f2e;
+            color: #ffecb3;
+            padding: 10px 5%;
+            text-align: center;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            overflow: hidden;
+            white-space: nowrap;
+            position: relative;
+            z-index: 10;
+        }
+        .flash-content {
+            display: inline-block;
+            transition: opacity 0.5s ease;
+        }
+        .flash-content i {
+            margin: 0 8px;
+            color: #ffb347;
+        }
+        @keyframes fadeFlash {
+            0% { opacity: 0.6; }
+            20% { opacity: 1; }
+            80% { opacity: 1; }
+            100% { opacity: 0.6; }
+        }
+
+        /* Header & Navigation */
+        .top-bar {
+            background: #0b3b3f;
+            color: white;
+            padding: 10px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .logo h1 {
+            font-size: 1.7rem;
+            letter-spacing: 1px;
+            font-weight: 700;
+        }
+        .logo span {
+            color: #9effcf;
+        }
+        .cart-icon {
+            background: #1e5f5c;
+            padding: 8px 18px;
+            border-radius: 40px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+        .cart-icon:hover {
+            background: #2c7a76;
+        }
+        .cart-count {
+            background: #ffb347;
+            color: #1e2f2f;
+            border-radius: 30px;
+            padding: 2px 10px;
+            font-weight: bold;
+        }
+        nav {
+            background: white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            padding: 12px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .nav-links a {
+            margin-right: 25px;
+            text-decoration: none;
+            color: #1f5e5a;
+            font-weight: 500;
+            transition: 0.2s;
+        }
+        .nav-links a:hover, .nav-links a.active {
+            color: #0b3b3f;
+            text-decoration: underline;
+            font-weight: 600;
+        }
+        .search-box input {
+            padding: 10px 18px;
+            border: 1px solid #cbd5e1;
+            border-radius: 40px;
+            width: 240px;
+            outline: none;
+        }
+
+        /* Prescription Hero */
+        .prescription-hero {
+            background: linear-gradient(135deg, #cbe7e3, #b3dbd5);
+            padding: 40px 5%;
+            text-align: center;
+        }
+        .prescription-hero h2 {
+            font-size: 2.2rem;
+            color: #094c47;
+        }
+        .prescription-hero p {
+            font-size: 1rem;
+            margin-top: 10px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Main Content */
+        .prescription-container {
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 0 5%;
+            display: flex;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+        .upload-section {
+            flex: 1.5;
+            min-width: 280px;
+        }
+        .info-section {
+            flex: 1;
+            min-width: 260px;
+        }
+
+        /* Upload Card */
+        .upload-card {
+            background: white;
+            border-radius: 32px;
+            padding: 35px;
+            box-shadow: 0 20px 35px rgba(0,0,0,0.05);
+        }
+        .upload-card h3 {
+            font-size: 1.6rem;
+            color: #0a3b3a;
+            margin-bottom: 10px;
+        }
+        .upload-card .subtitle {
+            color: #6c8b89;
+            margin-bottom: 25px;
+            font-size: 0.9rem;
+        }
+        .form-group {
+            margin-bottom: 22px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: #1f5e5a;
+            margin-bottom: 8px;
+        }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 14px 18px;
+            border: 1.5px solid #e0ecea;
+            border-radius: 24px;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+            outline: none;
+            background: #fefefe;
+        }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            border-color: #2c9c8f;
+            box-shadow: 0 0 0 3px rgba(44,156,143,0.1);
+        }
+        .file-upload-area {
+            border: 2px dashed #cbd5e1;
+            border-radius: 24px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: #fafcfc;
+        }
+        .file-upload-area:hover {
+            border-color: #2c9c8f;
+            background: #f0f8f6;
+        }
+        .file-upload-area i {
+            font-size: 3rem;
+            color: #2c9c8f;
+            margin-bottom: 12px;
+        }
+        .file-upload-area p {
+            color: #6c8b89;
+        }
+        .file-name {
+            margin-top: 12px;
+            font-size: 0.85rem;
+            color: #156f68;
+            font-weight: 500;
+        }
+        .upload-btn {
+            background: #0b5e5a;
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 16px;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-top: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+        }
+        .upload-btn:hover {
+            background: #094e4a;
+            transform: translateY(-2px);
+        }
+
+        /* Info Cards */
+        .info-card {
+            background: white;
+            border-radius: 28px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+        }
+        .info-card h4 {
+            font-size: 1.2rem;
+            color: #0a3b3a;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .info-card h4 i {
+            color: #2c9c8f;
+        }
+        .info-card p {
+            color: #4a5e5c;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+        .steps-list {
+            list-style: none;
+            margin-top: 15px;
+        }
+        .steps-list li {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 18px;
+            font-size: 0.9rem;
+            color: #2c5a55;
+        }
+        .steps-list li i {
+            width: 28px;
+            height: 28px;
+            background: #d9f0ec;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #0b5e5a;
+            font-size: 0.8rem;
+        }
+        .contact-card {
+            background: linear-gradient(135deg, #0b3b3f, #0a2f2e);
+            color: white;
+        }
+        .contact-card h4, .contact-card p {
+            color: white;
+        }
+        .contact-card .contact-detail {
+            margin-top: 15px;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .contact-card .contact-detail span {
+            background: rgba(255,255,255,0.2);
+            padding: 8px 16px;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Recent Prescriptions Table */
+        .recent-section {
+            max-width: 1200px;
+            margin: 20px auto 50px;
+            padding: 0 5%;
+        }
+        .recent-card {
+            background: white;
+            border-radius: 28px;
+            padding: 25px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+        }
+        .recent-card h3 {
+            font-size: 1.3rem;
+            color: #0a3b3a;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .prescription-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .prescription-table th, .prescription-table td {
+            padding: 14px 12px;
+            text-align: left;
+            border-bottom: 1px solid #e0ecea;
+        }
+        .prescription-table th {
+            color: #1f5e5a;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 30px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+        .status-pending { background: #fff3cd; color: #856404; }
+        .status-reviewed { background: #d1ecf1; color: #0c5460; }
+        .status-approved { background: #d4edda; color: #155724; }
+        .status-shipped { background: #cce5ff; color: #004085; }
+
+        /* Footer */
+        footer {
+            background: #082f2e;
+            color: #e0f2f0;
+            padding: 35px 5% 25px;
+            margin-top: 60px;
+        }
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        .social-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .social-links a {
+            color: white;
+            background: #1e6b65;
+            width: 40px;
+            height: 40px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: 0.2s;
+            font-size: 1.2rem;
+            text-decoration: none;
+        }
+        .social-links a:hover {
+            background: #ffb347;
+            color: #082f2e;
+        }
+        .copyright {
+            text-align: center;
+            border-top: 1px solid #2a6b66;
+            padding-top: 20px;
+            font-size: 0.8rem;
+        }
+        .toast-msg {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: #1f5e5a;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 40px;
+            z-index: 1100;
+            font-weight: 500;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        @media (max-width: 768px) {
+            .prescription-container { flex-direction: column; }
+            .prescription-table { font-size: 0.8rem; }
+            .prescription-table th, .prescription-table td { padding: 10px 6px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Flash Bar: Rotating Social Media Notifications -->
+<div class="flash-bar" id="flashBar">
+    <div class="flash-content" id="flashMessage">
+        <i class="fab fa-instagram"></i> 📢 Follow us on Instagram: @bermacy_rw
+    </div>
+</div>
+
+<div class="top-bar">
+    <div class="logo">
+        <h1>BERMACY <span>RW</span></h1>
+        <small>💊 Trusted Pharmacy | Prescription Service</small>
+    </div>
+    <div class="cart-icon" id="cartIconBtn">
+        <i class="fas fa-shopping-cart"></i> <span>Cart</span>
+        <span class="cart-count" id="cartCountDisplay">0</span>
+    </div>
+</div>
+
+<nav>
+    <div class="nav-links">
+        <a href="../index.html">Home</a>
+        <a href="shop.html">Shop Medicines</a>
+        <a href="blog.html">Health Blog</a>
+        <a href="prescriptions.html" class="active">Prescriptions</a>
+        <a href="contact.html">Contact</a>
+    </div>
+    <div class="search-box">
+        <input type="text" id="searchInput" placeholder="🔍 Search prescriptions...">
+    </div>
+</nav>
+
+<section class="prescription-hero">
+    <h2><i class="fas fa-prescription-bottle"></i> Upload Your Prescription</h2>
+    <p>Fast, secure prescription upload. Our pharmacists will review and deliver your medicines to your doorstep.</p>
+</section>
+
+<div class="prescription-container">
+    <!-- Upload Section -->
+    <div class="upload-section">
+        <div class="upload-card">
+            <h3><i class="fas fa-upload"></i> Submit Prescription</h3>
+            <p class="subtitle">Fill in your details and upload a clear photo of your prescription</p>
+            
+            <form id="prescriptionForm">
+                <div class="form-group">
+                    <label><i class="fas fa-user"></i> Full Name</label>
+                    <input type="text" id="fullName" placeholder="Enter your full name" required>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-phone"></i> Phone Number</label>
+                    <input type="tel" id="phone" placeholder="+250 788 123 456" required>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-map-marker-alt"></i> Delivery Address</label>
+                    <input type="text" id="address" placeholder="Kigali, Rwanda - Street & Building" required>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-truck"></i> Delivery Preference</label>
+                    <select id="deliveryPref">
+                        <option value="standard">Standard Delivery (2-3 days) - Free</option>
+                        <option value="express">Express Delivery (Same day) - 2,000 RWF</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-file-image"></i> Prescription Image</label>
+                    <div class="file-upload-area" id="fileUploadArea">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p>Click or drag & drop to upload</p>
+                        <p style="font-size:0.7rem;">JPEG, PNG, PDF (Max 5MB)</p>
+                        <input type="file" id="prescriptionFile" accept="image/*,application/pdf" style="display:none;">
+                    </div>
+                    <div class="file-name" id="fileNameDisplay"></div>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-stethoscope"></i> Additional Notes (Optional)</label>
+                    <textarea rows="3" id="notes" placeholder="Any special instructions or allergies to mention..."></textarea>
+                </div>
+                <button type="submit" class="upload-btn"><i class="fas fa-paper-plane"></i> Submit Prescription</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Info Section -->
+    <div class="info-section">
+        <div class="info-card">
+            <h4><i class="fas fa-info-circle"></i> How It Works</h4>
+            <ul class="steps-list">
+                <li><i class="fas fa-1"></i> Fill in your details</li>
+                <li><i class="fas fa-2"></i> Upload a clear prescription photo</li>
+                <li><i class="fas fa-3"></i> Our pharmacists review within 2 hours</li>
+                <li><i class="fas fa-4"></i> Get WhatsApp confirmation & payment link</li>
+                <li><i class="fas fa-5"></i> Fast delivery to your doorstep</li>
+            </ul>
+        </div>
+        <div class="info-card">
+            <h4><i class="fas fa-shield-alt"></i> Why Upload With Us?</h4>
+            <p>✓ Licensed pharmacists review every prescription<br>
+            ✓ 100% genuine medicines from trusted suppliers<br>
+            ✓ Free delivery on orders over 25,000 RWF<br>
+            ✓ Secure payment via Mobile Money or Card<br>
+            ✓ Refill reminders for chronic medications</p>
+        </div>
+        <div class="info-card contact-card">
+            <h4><i class="fas fa-headset"></i> Need Help?</h4>
+            <p>Our support team is available 24/7 to assist you with prescription uploads and medicine inquiries.</p>
+            <div class="contact-detail">
+                <span><i class="fab fa-whatsapp"></i> <a style="text-decoration: none;" href="https://www.whatsapp.com/channel/0029VbC8Kt2GE56eK97YdQ01">Whatsap</a></span>
+                <span><i class="fas fa-phone-alt"></i> +250 788 123 456</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Recent Prescriptions Section -->
+<div class="recent-section">
+    <div class="recent-card">
+        <h3><i class="fas fa-history"></i> Recent Prescription Orders</h3>
+        <div style="overflow-x: auto;">
+            <table class="prescription-table" id="prescriptionTable">
+                <thead>
+                    <tr><th>Date</th><th>Patient Name</th><th>Status</th><th>Action</th></tr>
+                </thead>
+                <tbody id="prescriptionList">
+                    <tr><td colspan="4" style="text-align:center;">No prescriptions yet. Submit your first prescription!</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <div class="footer-content">
+        <div class="footer-about">
+            <h3>Bermacy RW</h3>
+            <p>Rwanda's leading digital pharmacy delivering safe, affordable medicines. Your health is our mission.</p>
+            <div class="social-links">
+                <a href="https://instagram.com/bermacy_rw" target="_blank"><i class="fab fa-instagram"></i></a>
+                <a href="https://facebook.com/bermacy_rw" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://linkedin.com/in/bermacy_rw" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                <a href="https://whatsapp.com/channel/0029VaBermacy_rw" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                <a href="https://twitter.com/bermacy_rw" target="_blank"><i class="fab fa-twitter"></i></a>
+                <a href="https://youtube.com/c/bermacy_rw" target="_blank"><i class="fab fa-youtube"></i></a>
+                <a href="https://tiktok.com/@bermacy_rw" target="_blank"><i class="fab fa-tiktok"></i></a>
+            </div>
+        </div>
+        <div class="footer-links">
+            <h4>Quick Links</h4>
+            <ul style="list-style:none;">
+                <li><a href="index.html" style="color:#cbd5e6;">Home</a></li>
+                <li><a href="shop.html" style="color:#cbd5e6;">Shop Medicines</a></li>
+                <li><a href="blog.html" style="color:#cbd5e6;">Health Blog</a></li>
+            </ul>
+        </div>
+        <div class="footer-links">
+            <h4>Contact</h4>
+            <ul style="list-style:none;">
+                <li><i class="fas fa-phone-alt"></i> +250 788 123 456</li>
+                <li><i class="fas fa-envelope"></i> care@bermacy.rw</li>
+            </ul>
+        </div>
+    </div>
+    <div class="copyright">
+        <p>© 2025 Bermacy RW — Professional prescription service. Follow @bermacy_rw on all platforms.</p>
+    </div>
+</footer>
+
+<script>
+    // Load cart from localStorage (shared across all pages)
+    let cart = [];
+    let flashIndex = 0;
+    const socialMessages = [
+        { icon: "fab fa-instagram", text: "📸 Instagram: @bermacy_rw — Daily health tips & offers!" },
+        { icon: "fab fa-facebook-f", text: "👍 Facebook: @bermacy_rw — Join our community!" },
+        { icon: "fab fa-linkedin-in", text: "🔗 LinkedIn: bermacy_rw — Pharma insights" },
+        { icon: "fab fa-whatsapp", text: "📱 WhatsApp Channel: bermacy_rw — Get alerts" },
+        { icon: "fab fa-twitter", text: "🐦 X (Twitter): @bermacy_rw — Latest updates" },
+        { icon: "fab fa-youtube", text: "🎥 YouTube: bermacy_rw — Health videos" },
+        { icon: "fab fa-tiktok", text: "🎵 TikTok: @bermacy_rw — Fun pharma content" }
+    ];
+    
+    function rotateFlash() { 
+        const flashDiv = document.getElementById('flashMessage'); 
+        if(flashDiv) { 
+            const msg = socialMessages[flashIndex % socialMessages.length]; 
+            flashDiv.innerHTML = `<i class="${msg.icon}"></i> ${msg.text}`; 
+            flashDiv.style.animation = 'fadeFlash 0.5s'; 
+            setTimeout(() => { if(flashDiv) flashDiv.style.animation = ''; }, 500); 
+            flashIndex++; 
+        } 
+    }
+    setInterval(rotateFlash, 60000); 
+    rotateFlash();
+
+    // Cart functions
+    function updateCartUI() {
+        const cartCountSpan = document.getElementById('cartCountDisplay');
+        const totalQty = cart.reduce((s,i) => s + i.quantity, 0);
+        if(cartCountSpan) cartCountSpan.innerText = totalQty;
+    }
+    function loadCart() { 
+        const saved = localStorage.getItem('bermacy_cart'); 
+        if(saved) { 
+            try { 
+                cart = JSON.parse(saved); 
+                if(!Array.isArray(cart)) cart=[]; 
+            } catch(e){cart=[];} 
+        } else cart=[]; 
+        updateCartUI(); 
+    }
+    function showToast(msg) { 
+        let toast = document.querySelector('.toast-msg'); 
+        if(!toast) { 
+            toast = document.createElement('div'); 
+            toast.className='toast-msg'; 
+            document.body.appendChild(toast); 
+        } 
+        toast.innerText = msg; 
+        toast.style.opacity='1'; 
+        clearTimeout(window.toastTimeout); 
+        window.toastTimeout = setTimeout(() => { if(toast) toast.style.opacity='0'; }, 2200); 
+    }
+    
+    document.getElementById('cartIconBtn')?.addEventListener('click', () => { 
+        showToast("🛍️ View your cart on the Shop page! Your cart items are saved across pages."); 
+    });
+
+    // Prescription data storage
+    let prescriptions = [];
+    
+    function loadPrescriptions() {
+        const saved = localStorage.getItem('bermacy_prescriptions');
+        if(saved) {
+            try {
+                prescriptions = JSON.parse(saved);
+            } catch(e) { prescriptions = []; }
+        }
+        renderPrescriptionTable();
+    }
+    
+    function savePrescriptions() {
+        localStorage.setItem('bermacy_prescriptions', JSON.stringify(prescriptions));
+        renderPrescriptionTable();
+    }
+    
+    function renderPrescriptionTable() {
+        const tbody = document.getElementById('prescriptionList');
+        const searchTerm = document.getElementById('searchInput')?.value.toLowerCase() || '';
+        
+        let filtered = [...prescriptions];
+        if(searchTerm) {
+            filtered = filtered.filter(p => p.name.toLowerCase().includes(searchTerm) || p.phone.includes(searchTerm));
+        }
+        
+        if(filtered.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;">No prescriptions found. Submit your first prescription!</td></tr>';
+            return;
+        }
+        
+        tbody.innerHTML = filtered.map(p => `
+            <tr>
+                <td>${p.date}</td>
+                <td>${p.name}</td>
+                <td><span class="status-badge status-${p.status}">${p.status}</span></td>
+                <td><button class="view-prescription" data-id="${p.id}" style="background:#eef3f2; border:none; padding:6px 14px; border-radius:30px; cursor:pointer;"><i class="fas fa-eye"></i> View</button></td>
+            </tr>
+        `).join('');
+        
+        document.querySelectorAll('.view-prescription').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const id = parseInt(btn.dataset.id);
+                const prescription = prescriptions.find(p => p.id === id);
+                if(prescription) {
+                    showToast(`📄 Prescription for ${prescription.name} - Status: ${prescription.status}. Our pharmacist will contact you soon.`);
+                }
+            });
+        });
+    }
+    
+    // File upload handling
+    const fileUploadArea = document.getElementById('fileUploadArea');
+    const fileInput = document.getElementById('prescriptionFile');
+    const fileNameDisplay = document.getElementById('fileNameDisplay');
+    let selectedFile = null;
+    
+    fileUploadArea?.addEventListener('click', () => {
+        fileInput.click();
+    });
+    
+    fileUploadArea?.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        fileUploadArea.style.borderColor = '#2c9c8f';
+        fileUploadArea.style.background = '#f0f8f6';
+    });
+    
+    fileUploadArea?.addEventListener('dragleave', (e) => {
+        e.preventDefault();
+        fileUploadArea.style.borderColor = '#cbd5e1';
+        fileUploadArea.style.background = '#fafcfc';
+    });
+    
+    fileUploadArea?.addEventListener('drop', (e) => {
+        e.preventDefault();
+        fileUploadArea.style.borderColor = '#cbd5e1';
+        fileUploadArea.style.background = '#fafcfc';
+        const files = e.dataTransfer.files;
+        if(files.length > 0) {
+            handleFile(files[0]);
+        }
+    });
+    
+    fileInput?.addEventListener('change', (e) => {
+        if(e.target.files.length > 0) {
+            handleFile(e.target.files[0]);
+        }
+    });
+    
+    function handleFile(file) {
+        const validTypes = ['image/jpeg', 'image/png', 'application/pdf'];
+        if(!validTypes.includes(file.type)) {
+            showToast("Please upload JPEG, PNG, or PDF file only.");
+            return;
+        }
+        if(file.size > 5 * 1024 * 1024) {
+            showToast("File size must be less than 5MB.");
+            return;
+        }
+        selectedFile = file;
+        fileNameDisplay.textContent = `✓ Selected: ${file.name}`;
+        fileNameDisplay.style.color = '#156f68';
+    }
+    
+    // Form submission
+    const prescriptionForm = document.getElementById('prescriptionForm');
+    prescriptionForm?.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        const name = document.getElementById('fullName').value.trim();
+        const phone = document.getElementById('phone').value.trim();
+        const address = document.getElementById('address').value.trim();
+        const deliveryPref = document.getElementById('deliveryPref').value;
+        const notes = document.getElementById('notes').value;
+        
+        if(!name || !phone || !address) {
+            showToast("Please fill in all required fields.");
+            return;
+        }
+        
+        if(!selectedFile) {
+            showToast("Please upload a prescription image.");
+            return;
+        }
+        
+        const newPrescription = {
+            id: Date.now(),
+            name: name,
+            phone: phone,
+            address: address,
+            deliveryPref: deliveryPref,
+            notes: notes,
+            fileName: selectedFile.name,
+            date: new Date().toLocaleDateString('en-RW'),
+            status: 'pending',
+            timestamp: Date.now()
+        };
+        
+        prescriptions.unshift(newPrescription);
+        savePrescriptions();
+        
+        // Reset form
+        prescriptionForm.reset();
+        selectedFile = null;
+        fileNameDisplay.textContent = '';
+        fileInput.value = '';
+        
+        showToast(`✅ Prescription submitted successfully! Our pharmacist will contact you within 2 hours on ${phone}.`);
+        
+        // Optional: Store in session for demo
+        console.log('Prescription submitted:', newPrescription);
+    });
+    
+    // Search functionality
+    document.getElementById('searchInput')?.addEventListener('input', () => {
+        renderPrescriptionTable();
+    });
+    
+    loadCart();
+    loadPrescriptions();
+</script>
+</body>
+</html>

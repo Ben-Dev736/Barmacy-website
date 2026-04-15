@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Bermacy RW | Contact Us - Get in Touch</title>
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts: Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: #f4f9fc;
+            color: #1a2c3e;
+            line-height: 1.5;
+        }
+
+        /* Flash Notification Bar - Social Media Rotator */
+        .flash-bar {
+            background: #0a2f2e;
+            color: #ffecb3;
+            padding: 10px 5%;
+            text-align: center;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            overflow: hidden;
+            white-space: nowrap;
+            position: relative;
+            z-index: 10;
+        }
+        .flash-content {
+            display: inline-block;
+            transition: opacity 0.5s ease;
+        }
+        .flash-content i {
+            margin: 0 8px;
+            color: #ffb347;
+        }
+        @keyframes fadeFlash {
+            0% { opacity: 0.6; }
+            20% { opacity: 1; }
+            80% { opacity: 1; }
+            100% { opacity: 0.6; }
+        }
+
+        /* Header & Navigation */
+        .top-bar {
+            background: #0b3b3f;
+            color: white;
+            padding: 10px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .logo h1 {
+            font-size: 1.7rem;
+            letter-spacing: 1px;
+            font-weight: 700;
+        }
+        .logo span {
+            color: #9effcf;
+        }
+        .cart-icon {
+            background: #1e5f5c;
+            padding: 8px 18px;
+            border-radius: 40px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+        .cart-icon:hover {
+            background: #2c7a76;
+        }
+        .cart-count {
+            background: #ffb347;
+            color: #1e2f2f;
+            border-radius: 30px;
+            padding: 2px 10px;
+            font-weight: bold;
+        }
+        nav {
+            background: white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            padding: 12px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .nav-links a {
+            margin-right: 25px;
+            text-decoration: none;
+            color: #1f5e5a;
+            font-weight: 500;
+            transition: 0.2s;
+        }
+        .nav-links a:hover, .nav-links a.active {
+            color: #0b3b3f;
+            text-decoration: underline;
+            font-weight: 600;
+        }
+        .search-box input {
+            padding: 10px 18px;
+            border: 1px solid #cbd5e1;
+            border-radius: 40px;
+            width: 240px;
+            outline: none;
+        }
+
+        /* Contact Hero */
+        .contact-hero {
+            background: linear-gradient(135deg, #cbe7e3, #b3dbd5);
+            padding: 40px 5%;
+            text-align: center;
+        }
+        .contact-hero h2 {
+            font-size: 2.2rem;
+            color: #094c47;
+        }
+        .contact-hero p {
+            font-size: 1rem;
+            margin-top: 10px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Main Content */
+        .contact-container {
+            max-width: 1300px;
+            margin: 50px auto;
+            padding: 0 5%;
+            display: flex;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+        .contact-form-section {
+            flex: 1.2;
+            min-width: 280px;
+        }
+        .contact-info-section {
+            flex: 0.8;
+            min-width: 260px;
+        }
+
+        /* Contact Form Card */
+        .contact-card {
+            background: white;
+            border-radius: 32px;
+            padding: 35px;
+            box-shadow: 0 20px 35px rgba(0,0,0,0.05);
+        }
+        .contact-card h3 {
+            font-size: 1.6rem;
+            color: #0a3b3a;
+            margin-bottom: 10px;
+        }
+        .contact-card .subtitle {
+            color: #6c8b89;
+            margin-bottom: 25px;
+            font-size: 0.9rem;
+        }
+        .form-group {
+            margin-bottom: 22px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: #1f5e5a;
+            margin-bottom: 8px;
+        }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 14px 18px;
+            border: 1.5px solid #e0ecea;
+            border-radius: 24px;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+            outline: none;
+            background: #fefefe;
+        }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            border-color: #2c9c8f;
+            box-shadow: 0 0 0 3px rgba(44,156,143,0.1);
+        }
+        .submit-btn {
+            background: #0b5e5a;
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 16px;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+        }
+        .submit-btn:hover {
+            background: #094e4a;
+            transform: translateY(-2px);
+        }
+
+        /* Info Cards */
+        .info-card {
+            background: white;
+            border-radius: 28px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+            transition: transform 0.2s;
+        }
+        .info-card:hover {
+            transform: translateY(-3px);
+        }
+        .info-card h4 {
+            font-size: 1.2rem;
+            color: #0a3b3a;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .info-card h4 i {
+            width: 40px;
+            height: 40px;
+            background: #d9f0ec;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #0b5e5a;
+        }
+        .contact-detail-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 18px;
+            padding: 8px 0;
+            border-bottom: 1px solid #e0ecea;
+        }
+        .contact-detail-item i {
+            width: 35px;
+            color: #2c9c8f;
+            font-size: 1.2rem;
+        }
+        .contact-detail-item span {
+            color: #4a5e5c;
+        }
+        .social-media-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 15px;
+        }
+        .social-icon-link {
+            background: #eef3f2;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #1f5e5a;
+            font-size: 1.3rem;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+        .social-icon-link:hover {
+            background: #2c9c8f;
+            color: white;
+            transform: scale(1.05);
+        }
+        .emergency-card {
+            background: linear-gradient(135deg, #fef5e7, #fff3e0);
+            border-left: 4px solid #ffb347;
+        }
+        .emergency-card h4 i {
+            background: #ffb34720;
+            color: #ff8c00;
+        }
+
+        /* Map Section */
+        .map-section {
+            max-width: 1300px;
+            margin: 20px auto 50px;
+            padding: 0 5%;
+        }
+        .map-card {
+            background: white;
+            border-radius: 32px;
+            padding: 25px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+        }
+        .map-card h3 {
+            font-size: 1.3rem;
+            color: #0a3b3a;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .map-container {
+            border-radius: 24px;
+            overflow: hidden;
+            height: 350px;
+            background: #eef3f2;
+            position: relative;
+        }
+        .map-placeholder {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #cbe7e3, #b3dbd5);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            color: #094c47;
+        }
+        .map-placeholder i {
+            font-size: 4rem;
+            opacity: 0.7;
+        }
+        .map-placeholder p {
+            font-weight: 500;
+        }
+
+        /* FAQ Section */
+        .faq-section {
+            max-width: 1300px;
+            margin: 20px auto 50px;
+            padding: 0 5%;
+        }
+        .faq-card {
+            background: white;
+            border-radius: 32px;
+            padding: 35px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+        }
+        .faq-card h3 {
+            font-size: 1.5rem;
+            color: #0a3b3a;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+        .faq-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+        }
+        .faq-item {
+            padding: 15px 0;
+            border-bottom: 1px solid #e0ecea;
+            cursor: pointer;
+        }
+        .faq-question {
+            font-weight: 600;
+            color: #1f5e5a;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .faq-question i {
+            color: #2c9c8f;
+            transition: 0.2s;
+        }
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            color: #6c8b89;
+            font-size: 0.85rem;
+            line-height: 1.6;
+            margin-top: 5px;
+        }
+        .faq-item.active .faq-answer {
+            max-height: 200px;
+            margin-top: 10px;
+        }
+        .faq-item.active .faq-question i {
+            transform: rotate(180deg);
+        }
+
+        /* Footer */
+        footer {
+            background: #082f2e;
+            color: #e0f2f0;
+            padding: 35px 5% 25px;
+            margin-top: 60px;
+        }
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        .social-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .social-links a {
+            color: white;
+            background: #1e6b65;
+            width: 40px;
+            height: 40px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: 0.2s;
+            font-size: 1.2rem;
+            text-decoration: none;
+        }
+        .social-links a:hover {
+            background: #ffb347;
+            color: #082f2e;
+        }
+        .copyright {
+            text-align: center;
+            border-top: 1px solid #2a6b66;
+            padding-top: 20px;
+            font-size: 0.8rem;
+        }
+        .toast-msg {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: #1f5e5a;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 40px;
+            z-index: 1100;
+            font-weight: 500;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        @media (max-width: 768px) {
+            .contact-container { flex-direction: column; }
+            .faq-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Flash Bar: Rotating Social Media Notifications -->
+<div class="flash-bar" id="flashBar">
+    <div class="flash-content" id="flashMessage">
+        <i class="fab fa-instagram"></i> 📢 Follow us on Instagram: @bermacy_rw
+    </div>
+</div>
+
+<div class="top-bar">
+    <div class="logo">
+        <h1>BERMACY <span>RW</span></h1>
+        <small>💊 Trusted Pharmacy | Contact Us</small>
+    </div>
+    <div class="cart-icon" id="cartIconBtn">
+        <i class="fas fa-shopping-cart"></i> <span>Cart</span>
+        <span class="cart-count" id="cartCountDisplay">0</span>
+    </div>
+</div>
+
+<nav>
+    <div class="nav-links">
+        <a href="../index.html">Home</a>
+        <a href="shop.html">Shop Medicines</a>
+        <a href="blog.html">Health Blog</a>
+        <a href="prescriptions.html">Prescriptions</a>
+        <a href="contact.html" class="active">Contact</a>
+    </div>
+    <div class="search-box">
+        <input type="text" id="searchInput" placeholder="🔍 Search...">
+    </div>
+</nav>
+
+<section class="contact-hero">
+    <h2><i class="fas fa-headset"></i> Get in Touch</h2>
+    <p>We're here to help with your medicine needs, prescription queries, or any questions about our services.</p>
+</section>
+
+<div class="contact-container">
+    <!-- Contact Form Section -->
+    <div class="contact-form-section">
+        <div class="contact-card">
+            <h3><i class="fas fa-envelope-open-text"></i> Send us a Message</h3>
+            <p class="subtitle">Fill out the form below and our team will respond within 24 hours</p>
+            
+            <form id="contactForm">
+                <div class="form-group">
+                    <label><i class="fas fa-user"></i> Full Name *</label>
+                    <input type="text" id="contactName" placeholder="Enter your full name" required>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-envelope"></i> Email Address *</label>
+                    <input type="email" id="contactEmail" placeholder="your@email.com" required>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-phone"></i> Phone Number</label>
+                    <input type="tel" id="contactPhone" placeholder="+250 788 123 456">
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-tag"></i> Subject *</label>
+                    <select id="contactSubject" required>
+                        <option value="">Select a subject</option>
+                        <option value="order">Order Inquiry</option>
+                        <option value="prescription">Prescription Upload Help</option>
+                        <option value="medicine">Medicine Information</option>
+                        <option value="delivery">Delivery Question</option>
+                        <option value="feedback">Feedback & Suggestions</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-comment-dots"></i> Message *</label>
+                    <textarea rows="5" id="contactMessage" placeholder="Please describe your inquiry in detail..." required></textarea>
+                </div>
+                <button type="submit" class="submit-btn"><i class="fas fa-paper-plane"></i> Send Message</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Contact Info Section -->
+    <div class="contact-info-section">
+        <div class="info-card">
+            <h4><i class="fas fa-map-marker-alt"></i> Visit Us</h4>
+            <div class="contact-detail-item">
+                <i class="fas fa-building"></i>
+                <span>Bermacy RW Headquarters<br>KG 123 St, Kigali Heights<br>Kigali, Rwanda</span>
+            </div>
+            <div class="contact-detail-item">
+                <i class="fas fa-clock"></i>
+                <span>Monday - Friday: 8:00 AM - 8:00 PM<br>Saturday: 9:00 AM - 6:00 PM<br>Sunday: 10:00 AM - 4:00 PM</span>
+            </div>
+        </div>
+
+        <div class="info-card">
+            <h4><i class="fas fa-phone-alt"></i> Call or WhatsApp</h4>
+            <div class="contact-detail-item">
+                <i class="fas fa-phone"></i>
+                <span>+250 788 123 456 (Support)</span>
+            </div>
+            <div class="contact-detail-item">
+                <i class="fab fa-whatsapp"></i>
+                <span>+250 788 123 456 (WhatsApp)</span>
+            </div>
+            <div class="contact-detail-item">
+                <i class="fas fa-envelope"></i>
+                <span>care@bermacy.rw</span>
+            </div>
+        </div>
+
+        <div class="info-card">
+            <h4><i class="fas fa-share-alt"></i> Follow Us</h4>
+            <div class="social-media-grid">
+                <a href="https://instagram.com/bermacy_rw" target="_blank" class="social-icon-link"><i class="fab fa-instagram"></i></a>
+                <a href="https://facebook.com/bermacy_rw" target="_blank" class="social-icon-link"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://linkedin.com/in/bermacy_rw" target="_blank" class="social-icon-link"><i class="fab fa-linkedin-in"></i></a>
+                <a href="https://whatsapp.com/channel/0029VaBermacy_rw" target="_blank" class="social-icon-link"><i class="fab fa-whatsapp"></i></a>
+                <a href="https://twitter.com/bermacy_rw" target="_blank" class="social-icon-link"><i class="fab fa-twitter"></i></a>
+                <a href="https://youtube.com/c/bermacy_rw" target="_blank" class="social-icon-link"><i class="fab fa-youtube"></i></a>
+                <a href="https://tiktok.com/@bermacy_rw" target="_blank" class="social-icon-link"><i class="fab fa-tiktok"></i></a>
+            </div>
+        </div>
+
+        <div class="info-card emergency-card">
+            <h4><i class="fas fa-ambulance"></i> Emergency Support</h4>
+            <p style="margin-bottom: 12px;">For urgent medical assistance or after-hours pharmacy needs:</p>
+            <div class="contact-detail-item">
+                <i class="fas fa-phone-alt"></i>
+                <span><strong>Emergency Hotline:</strong> +250 788 999 999</span>
+            </div>
+            <p style="font-size: 0.75rem; margin-top: 12px;">24/7 support for prescription emergencies</p>
+        </div>
+    </div>
+</div>
+
+<!-- Map Section -->
+<div class="map-section">
+    <div class="map-card">
+        <h3><i class="fas fa-map-marked-alt"></i> Our Location</h3>
+        <div class="map-container">
+            <div class="map-placeholder">
+                <i class="fas fa-map-marker-alt"></i>
+                <p>📍 Bermacy RW Headquarters - Kigali Heights, KG 123 St</p>
+                <p style="font-size: 0.8rem;"><i class="fas fa-route"></i> Near Kigali Convention Centre</p>
+                <p style="font-size: 0.7rem; opacity: 0.6;">Interactive map loading - Google Maps integration available</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- FAQ Section -->
+<div class="faq-section">
+    <div class="faq-card">
+        <h3><i class="fas fa-question-circle"></i> Frequently Asked Questions</h3>
+        <div class="faq-grid">
+            <div class="faq-item">
+                <div class="faq-question">
+                    How do I upload a prescription?
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">Simply go to our Prescriptions page, fill in your details, and upload a clear photo of your prescription. Our pharmacists will review it within 2 hours.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    What payment methods do you accept?
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">We accept Mobile Money (MTN MoMo, Airtel Money), Credit/Debit Cards, and Cash on Delivery within Kigali.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    How long does delivery take?
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">Standard delivery takes 2-3 business days. Express delivery (same day) is available for orders placed before 12 PM in Kigali.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    Are all medicines genuine?
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">Yes! We source all medicines from licensed distributors and manufacturers. Every product is 100% authentic and verified.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    Can I return medicines?
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">Due to safety regulations, medicines cannot be returned once sold. However, if you receive damaged products, contact us within 24 hours.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    Do you offer prescription refills?
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">Yes! We offer automatic refill reminders for chronic medications. Contact our support to set up recurring orders.</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <div class="footer-content">
+        <div class="footer-about">
+            <h3>Bermacy RW</h3>
+            <p>Rwanda's leading digital pharmacy delivering safe, affordable medicines. Your health is our mission.</p>
+            <div class="social-links">
+                <a href="https://instagram.com/bermacy_rw" target="_blank"><i class="fab fa-instagram"></i></a>
+                <a href="https://facebook.com/bermacy_rw" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://linkedin.com/in/bermacy_rw" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                <a href="https://whatsapp.com/channel/0029VaBermacy_rw" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                <a href="https://twitter.com/bermacy_rw" target="_blank"><i class="fab fa-twitter"></i></a>
+                <a href="https://youtube.com/c/bermacy_rw" target="_blank"><i class="fab fa-youtube"></i></a>
+                <a href="https://tiktok.com/@bermacy_rw" target="_blank"><i class="fab fa-tiktok"></i></a>
+            </div>
+        </div>
+        <div class="footer-links">
+            <h4>Quick Links</h4>
+            <ul style="list-style:none;">
+                <li><a href="index.html" style="color:#cbd5e6;">Home</a></li>
+                <li><a href="shop.html" style="color:#cbd5e6;">Shop Medicines</a></li>
+                <li><a href="blog.html" style="color:#cbd5e6;">Health Blog</a></li>
+                <li><a href="prescriptions.html" style="color:#cbd5e6;">Prescriptions</a></li>
+            </ul>
+        </div>
+        <div class="footer-links">
+            <h4>Contact Info</h4>
+            <ul style="list-style:none;">
+                <li><i class="fas fa-phone-alt"></i> +250 788 123 456</li>
+                <li><i class="fas fa-envelope"></i> care@bermacy.rw</li>
+                <li><i class="fas fa-map-marker-alt"></i> Kigali, Rwanda</li>
+            </ul>
+        </div>
+    </div>
+    <div class="copyright">
+        <p>© 2025 Bermacy RW — Your trusted pharmacy partner in Rwanda. Follow @bermacy_rw on all platforms.</p>
+    </div>
+</footer>
+
+<script>
+    // Load cart from localStorage (shared across all pages)
+    let cart = [];
+    let flashIndex = 0;
+    const socialMessages = [
+        { icon: "fab fa-instagram", text: "📸 Instagram: @bermacy_rw — Daily health tips & offers!" },
+        { icon: "fab fa-facebook-f", text: "👍 Facebook: @bermacy_rw — Join our community!" },
+        { icon: "fab fa-linkedin-in", text: "🔗 LinkedIn: bermacy_rw — Pharma insights" },
+        { icon: "fab fa-whatsapp", text: "📱 WhatsApp Channel: bermacy_rw — Get alerts" },
+        { icon: "fab fa-twitter", text: "🐦 X (Twitter): @bermacy_rw — Latest updates" },
+        { icon: "fab fa-youtube", text: "🎥 YouTube: bermacy_rw — Health videos" },
+        { icon: "fab fa-tiktok", text: "🎵 TikTok: @bermacy_rw — Fun pharma content" }
+    ];
+    
+    function rotateFlash() { 
+        const flashDiv = document.getElementById('flashMessage'); 
+        if(flashDiv) { 
+            const msg = socialMessages[flashIndex % socialMessages.length]; 
+            flashDiv.innerHTML = `<i class="${msg.icon}"></i> ${msg.text}`; 
+            flashDiv.style.animation = 'fadeFlash 0.5s'; 
+            setTimeout(() => { if(flashDiv) flashDiv.style.animation = ''; }, 500); 
+            flashIndex++; 
+        } 
+    }
+    setInterval(rotateFlash, 60000); 
+    rotateFlash();
+
+    // Cart functions
+    function updateCartUI() {
+        const cartCountSpan = document.getElementById('cartCountDisplay');
+        const totalQty = cart.reduce((s,i) => s + i.quantity, 0);
+        if(cartCountSpan) cartCountSpan.innerText = totalQty;
+    }
+    function loadCart() { 
+        const saved = localStorage.getItem('bermacy_cart'); 
+        if(saved) { 
+            try { 
+                cart = JSON.parse(saved); 
+                if(!Array.isArray(cart)) cart=[]; 
+            } catch(e){cart=[];} 
+        } else cart=[]; 
+        updateCartUI(); 
+    }
+    function showToast(msg) { 
+        let toast = document.querySelector('.toast-msg'); 
+        if(!toast) { 
+            toast = document.createElement('div'); 
+            toast.className='toast-msg'; 
+            document.body.appendChild(toast); 
+        } 
+        toast.innerText = msg; 
+        toast.style.opacity='1'; 
+        clearTimeout(window.toastTimeout); 
+        window.toastTimeout = setTimeout(() => { if(toast) toast.style.opacity='0'; }, 2200); 
+    }
+    
+    document.getElementById('cartIconBtn')?.addEventListener('click', () => { 
+        showToast("🛍️ View your cart on the Shop page! Your cart items are saved across pages."); 
+    });
+
+    // Contact Form Submission
+    const contactForm = document.getElementById('contactForm');
+    contactForm?.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        const name = document.getElementById('contactName').value.trim();
+        const email = document.getElementById('contactEmail').value.trim();
+        const phone = document.getElementById('contactPhone').value.trim();
+        const subject = document.getElementById('contactSubject').value;
+        const message = document.getElementById('contactMessage').value.trim();
+        
+        if(!name || !email || !subject || !message) {
+            showToast("Please fill in all required fields.");
+            return;
+        }
+        
+        if(!email.includes('@') || !email.includes('.')) {
+            showToast("Please enter a valid email address.");
+            return;
+        }
+        
+        // Store contact message in localStorage (for demo)
+        const contactMessages = JSON.parse(localStorage.getItem('bermacy_contact_messages') || '[]');
+        const newMessage = {
+            id: Date.now(),
+            name: name,
+            email: email,
+            phone: phone,
+            subject: subject,
+            message: message,
+            date: new Date().toLocaleString('en-RW'),
+            status: 'unread'
+        };
+        contactMessages.unshift(newMessage);
+        localStorage.setItem('bermacy_contact_messages', JSON.stringify(contactMessages));
+        
+        // Reset form
+        contactForm.reset();
+        
+        showToast(`✅ Thank you ${name}! Your message has been sent. We'll respond within 24 hours.`);
+        
+        // Optional: log to console for demo
+        console.log('Contact message saved:', newMessage);
+    });
+    
+    // FAQ Accordion
+    document.querySelectorAll('.faq-item').forEach(item => {
+        const question = item.querySelector('.faq-question');
+        question.addEventListener('click', () => {
+            item.classList.toggle('active');
+        });
+    });
+    
+    // Search functionality (for demonstration)
+    const searchInput = document.getElementById('searchInput');
+    searchInput?.addEventListener('input', (e) => {
+        const searchTerm = e.target.value.toLowerCase();
+        if(searchTerm.length > 2) {
+            showToast(`🔍 Searching for "${searchTerm}" - Contact our support for quick help!`);
+        }
+    });
+    
+    loadCart();
+</script>
+</body>
+</html>
