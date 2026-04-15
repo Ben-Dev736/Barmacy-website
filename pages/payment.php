@@ -24,7 +24,7 @@ if(empty($cart_data) && isset($_SESSION['pending_cart'])) {
 
 // If still no data, redirect back to shop
 if(empty($cart_data)) {
-    header("Location: shop.html");
+    header("Location: Shop.html");
     exit();
 }
 
