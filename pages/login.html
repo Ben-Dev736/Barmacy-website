@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>Bermacy RW | Login / Register - Secure Checkout</title>
-    <!-- Font Awesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- Google Fonts: Poppins -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         * {
@@ -297,7 +295,6 @@
             <p>Login or create an account to complete your order</p>
         </div>
 
-        <!-- Cart Summary Preview -->
         <div class="cart-summary" id="cartSummary">
             <h4><i class="fas fa-shopping-bag"></i> Your Cart Summary</h4>
             <div class="cart-items-preview" id="cartItemsPreview">
@@ -306,17 +303,14 @@
             <div class="cart-total-preview" id="cartTotalPreview">Total: 0 RWF</div>
         </div>
 
-        <!-- Tab Buttons -->
         <div class="tab-buttons">
             <button class="tab-btn active" data-tab="login">Login</button>
             <button class="tab-btn" data-tab="register">Register</button>
         </div>
 
-        <!-- Error/Success Messages -->
         <div id="errorMessage" class="error-message"></div>
         <div id="successMessage" class="success-message"></div>
 
-        <!-- Login Form -->
         <div id="loginPanel" class="form-panel active">
             <form id="loginForm">
                 <div class="input-group input-group-with-icon">
@@ -341,7 +335,6 @@
             <button id="googleLoginBtn" class="google-btn"><i class="fab fa-google"></i> Continue with Google</button>
         </div>
 
-        <!-- Register Form -->
         <div id="registerPanel" class="form-panel">
             <form id="registerForm">
                 <div class="input-group input-group-with-icon">
@@ -572,7 +565,7 @@
         form.submit();
     }
     
-    // Tab switching
+    // Tab switching logic
     const tabBtns = document.querySelectorAll('.tab-btn');
     const loginPanel = document.getElementById('loginPanel');
     const registerPanel = document.getElementById('registerPanel');
@@ -592,140 +585,64 @@
             }
         });
     });
-    
-    // Login Form Handler
+
+    // Handle Login Submit
     document.getElementById('loginForm').addEventListener('submit', (e) => {
         e.preventDefault();
+        const email = document.getElementById('loginEmail').value;
+        const mobile = document.getElementById('loginMobile').value;
+        const pass = document.getElementById('loginPassword').value;
         
-        const email = document.getElementById('loginEmail').value.trim();
-        const mobile = document.getElementById('loginMobile').value.trim();
-        const password = document.getElementById('loginPassword').value;
-        
+        // Use email if provided, otherwise mobile
         const identifier = email || mobile;
-        
-        if(!identifier) {
-            showError('Please enter email or mobile number');
-            return;
-        }
-        
-        if(!password) {
-            showError('Please enter your password');
-            return;
-        }
-        
-        const result = loginUser(identifier, password);
+        const result = loginUser(identifier, pass);
         
         if(result.success) {
-            showSuccess(`Welcome back, ${result.user.name}! Redirecting to payment...`);
-            setTimeout(() => {
-                redirectToPayment(result.user);
-            }, 1500);
+            redirectToPayment(result.user);
         } else {
             showError(result.message);
         }
     });
-    
-    // Register Form Handler
+
+    // Handle Register Submit
     document.getElementById('registerForm').addEventListener('submit', (e) => {
         e.preventDefault();
-        
-        const name = document.getElementById('regFullName').value.trim();
-        const email = document.getElementById('regEmail').value.trim();
-        const mobile = document.getElementById('regMobile').value.trim();
-        const password = document.getElementById('regPassword').value;
-        const confirmPassword = document.getElementById('regConfirmPassword').value;
-        const terms = document.getElementById('termsCheckbox').checked;
-        
-        if(!name || !email || !mobile || !password) {
-            showError('Please fill in all required fields');
+        const name = document.getElementById('regFullName').value;
+        const email = document.getElementById('regEmail').value;
+        const mobile = document.getElementById('regMobile').value;
+        const pass = document.getElementById('regPassword').value;
+        const confirmPass = document.getElementById('regConfirmPassword').value;
+
+        if(pass !== confirmPass) {
+            showError("Passwords do not match.");
             return;
         }
         
-        if(password.length < 6) {
-            showError('Password must be at least 6 characters');
-            return;
-        }
-        
-        if(password !== confirmPassword) {
-            showError('Passwords do not match');
-            return;
-        }
-        
-        if(!terms) {
-            showError('Please agree to the Terms & Conditions');
-            return;
-        }
-        
-        // Validate mobile format (Rwandan format)
-        const mobileRegex = /^07[0-9]{8}$|^[0-9]{10}$/;
-        if(!mobileRegex.test(mobile) && mobile.length < 10) {
-            showError('Please enter a valid mobile number (e.g., 0788123456)');
-            return;
-        }
-        
-        const result = registerUser(name, email, mobile, password);
-        
+        const result = registerUser(name, email, mobile, pass);
         if(result.success) {
-            showSuccess(`Account created successfully! Welcome ${name}. Redirecting to payment...`);
-            setTimeout(() => {
-                redirectToPayment(result.user);
-            }, 1500);
+            redirectToPayment(result.user);
         } else {
             showError(result.message);
         }
     });
-    
-    // Google Login Simulation
-    function handleGoogleAuth() {
-        // Simulate Google OAuth - In production, this would integrate with Google Identity Services
-        const googleUser = {
-            id: 'google_' + Date.now(),
-            name: 'Google User',
-            email: 'user@gmail.com',
-            mobile: '',
-            password: 'google_oauth_token'
-        };
-        
-        // Check if user exists
-        let users = getUsers();
-        let existingUser = users.find(u => u.email === googleUser.email);
-        
-        if(!existingUser) {
-            googleUser.name = prompt('Please enter your full name for your account:', 'John Doe');
-            if(googleUser.name) {
-                users.push(googleUser);
-                saveUsers(users);
-                existingUser = googleUser;
-            } else {
-                showError('Name is required to continue');
-                return;
-            }
-        }
-        
-        showSuccess(`Welcome ${existingUser.name}! Redirecting to payment...`);
-        setTimeout(() => {
-            redirectToPayment(existingUser);
-        }, 1500);
-    }
-    
-    document.getElementById('googleLoginBtn').addEventListener('click', handleGoogleAuth);
-    document.getElementById('googleRegisterBtn').addEventListener('click', handleGoogleAuth);
-    
-    // Forgot password handler
-    document.getElementById('forgotPassword').addEventListener('click', (e) => {
-        e.preventDefault();
-        showError('Please contact support at care@bermacy.rw to reset your password');
+
+    // Mock Google Login / Register
+    const googleButtons = ['googleLoginBtn', 'googleRegisterBtn'];
+    googleButtons.forEach(id => {
+        document.getElementById(id).addEventListener('click', () => {
+            // Mocking a successful Google Response
+            const mockGoogleUser = {
+                id: 'google_' + Date.now(),
+                name: 'Google User',
+                email: 'googleuser@example.com',
+                mobile: '0780000000'
+            };
+            redirectToPayment(mockGoogleUser);
+        });
     });
-    
-    // Load cart on page load
+
+    // Initialize
     loadCart();
-    
-    // Check if cart is empty and show warning
-    if(cart.length === 0) {
-        setTimeout(() => {
-            showError('Your cart is empty! Please add items to cart before checkout.');
-        }, 500);
-    }
 </script>
 </body>
 </html>
