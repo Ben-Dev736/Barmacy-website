@@ -9,27 +9,34 @@
     <!-- Google Fonts: Poppins -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        /* (ALL YOUR ORIGINAL CSS — UNCHANGED) */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: 'Poppins', sans-serif;
         }
+
         body {
             background: linear-gradient(135deg, #d9f0ec 0%, #c1e4df 100%);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
         }
+
+        /* Simple Header for Login Page */
         .simple-header {
             background: #0b3b3f;
             color: white;
             padding: 15px 5%;
             text-align: center;
         }
-        .simple-header h1 { font-size: 1.5rem; letter-spacing: 1px; }
-        .simple-header span { color: #9effcf; }
+        .simple-header h1 {
+            font-size: 1.5rem;
+            letter-spacing: 1px;
+        }
+        .simple-header span {
+            color: #9effcf;
+        }
         .back-to-shop {
             position: absolute;
             top: 20px;
@@ -40,7 +47,13 @@
             padding: 8px 18px;
             border-radius: 40px;
             font-size: 0.85rem;
+            transition: 0.2s;
         }
+        .back-to-shop:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        /* Login Container */
         .login-container {
             flex: 1;
             display: flex;
@@ -55,6 +68,20 @@
             width: 100%;
             padding: 45px 40px;
             box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+            transition: all 0.3s ease;
+        }
+        .login-header {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+        .login-header h2 {
+            font-size: 1.8rem;
+            color: #0a3b3a;
+            margin-bottom: 8px;
+        }
+        .login-header p {
+            color: #6c8b89;
+            font-size: 0.9rem;
         }
         .tab-buttons {
             display: flex;
@@ -70,61 +97,486 @@
             border: none;
             background: transparent;
             font-weight: 600;
+            font-size: 1rem;
             border-radius: 50px;
             cursor: pointer;
+            transition: 0.2s;
+            color: #4b6a6b;
         }
         .tab-btn.active {
             background: #0b5e5a;
             color: white;
+            box-shadow: 0 2px 8px rgba(11,94,90,0.2);
         }
-        .form-panel { display: none; }
-        .form-panel.active { display: block; }
+        .form-panel {
+            display: none;
+        }
+        .form-panel.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .input-group {
+            margin-bottom: 20px;
+        }
+        .input-group label {
+            display: block;
+            font-weight: 600;
+            color: #1f5e5a;
+            margin-bottom: 8px;
+            font-size: 0.85rem;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 14px 18px;
+            border: 1.5px solid #e0ecea;
+            border-radius: 30px;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+            outline: none;
+        }
+        .input-group input:focus {
+            border-color: #2c9c8f;
+            box-shadow: 0 0 0 3px rgba(44,156,143,0.1);
+        }
+        .input-group-with-icon {
+            position: relative;
+        }
+        .input-group-with-icon i {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #2c9c8f;
+        }
+        .input-group-with-icon input {
+            padding-left: 48px;
+        }
+        .checkbox-group {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            font-size: 0.85rem;
+        }
+        .checkbox-group label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+        .forgot-link {
+            color: #2c9c8f;
+            text-decoration: none;
+        }
+        .submit-btn {
+            background: #0b5e5a;
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 15px;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-bottom: 20px;
+        }
+        .submit-btn:hover {
+            background: #094e4a;
+            transform: translateY(-2px);
+        }
+        .google-btn {
+            background: white;
+            color: #444;
+            border: 1.5px solid #e0ecea;
+            width: 100%;
+            padding: 14px;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            transition: 0.2s;
+            margin-bottom: 15px;
+        }
+        .google-btn:hover {
+            background: #f8faf9;
+            border-color: #2c9c8f;
+        }
+        .divider {
+            text-align: center;
+            margin: 20px 0;
+            position: relative;
+        }
+        .divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: #e0ecea;
+        }
+        .divider span {
+            background: white;
+            padding: 0 15px;
+            position: relative;
+            color: #6c8b89;
+            font-size: 0.8rem;
+        }
+        .cart-summary {
+            background: #eef3f2;
+            border-radius: 24px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        .cart-summary h4 {
+            font-size: 0.9rem;
+            color: #0a3b3a;
+            margin-bottom: 8px;
+        }
+        .cart-items-preview {
+            font-size: 0.8rem;
+            color: #4b6a6b;
+            max-height: 120px;
+            overflow-y: auto;
+        }
+        .cart-item-preview {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            border-bottom: 1px solid #d9e4e2;
+        }
+        .cart-total-preview {
+            font-weight: 700;
+            color: #156f68;
+            margin-top: 10px;
+            text-align: right;
+        }
+        .error-message {
+            background: #fee2e2;
+            color: #c62828;
+            padding: 10px 15px;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            margin-bottom: 15px;
+            display: none;
+        }
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 10px 15px;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            margin-bottom: 15px;
+            display: none;
+        }
+        @media (max-width: 550px) {
+            .login-card { padding: 30px 25px; }
+        }
     </style>
 </head>
-
 <body>
 
 <div class="simple-header">
-    <a href="Shop.html" class="back-to-shop">Back</a>
+    <a href="Shop.html" class="back-to-shop"><i class="fas fa-arrow-left"></i> Back to Shop</a>
     <h1>BERMACY <span>RW</span></h1>
+    <small>Secure Checkout Login</small>
 </div>
 
 <div class="login-container">
     <div class="login-card">
+        <div class="login-header">
+            <h2><i class="fas fa-lock"></i> Secure Checkout</h2>
+            <p>Login or create an account to complete your order</p>
+        </div>
 
+        <!-- Cart Summary Preview -->
+        <div class="cart-summary" id="cartSummary">
+            <h4><i class="fas fa-shopping-bag"></i> Your Cart Summary</h4>
+            <div class="cart-items-preview" id="cartItemsPreview">
+                <div style="text-align:center; padding:10px;">Loading cart...</div>
+            </div>
+            <div class="cart-total-preview" id="cartTotalPreview">Total: 0 RWF</div>
+        </div>
+
+        <!-- Tab Buttons -->
         <div class="tab-buttons">
             <button class="tab-btn active" data-tab="login">Login</button>
             <button class="tab-btn" data-tab="register">Register</button>
         </div>
 
+        <!-- Error/Success Messages -->
+        <div id="errorMessage" class="error-message"></div>
+        <div id="successMessage" class="success-message"></div>
+
+        <!-- Login Form -->
         <div id="loginPanel" class="form-panel active">
             <form id="loginForm">
-                <input type="email" id="loginEmail" placeholder="Email" required>
-                <input type="password" id="loginPassword" placeholder="Password" required>
-                <button type="submit">Login</button>
+                <div class="input-group input-group-with-icon">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" id="loginEmail" placeholder="Email Address" required>
+                </div>
+                <div class="input-group input-group-with-icon">
+                    <i class="fas fa-phone"></i>
+                    <input type="tel" id="loginMobile" placeholder="Mobile Number (e.g., 0788123456)">
+                </div>
+                <div class="input-group input-group-with-icon">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="loginPassword" placeholder="Password" required>
+                </div>
+                <div class="checkbox-group">
+                    <label><input type="checkbox" id="rememberMe"> Remember me</label>
+                    <a href="#" class="forgot-link" id="forgotPassword">Forgot Password?</a>
+                </div>
+                <button type="submit" class="submit-btn"><i class="fas fa-sign-in-alt"></i> Login & Continue</button>
             </form>
+            <div class="divider"><span>OR</span></div>
+            <button id="googleLoginBtn" class="google-btn"><i class="fab fa-google"></i> Continue with Google</button>
         </div>
 
+        <!-- Register Form -->
         <div id="registerPanel" class="form-panel">
             <form id="registerForm">
-                <input type="text" id="regFullName" placeholder="Full Name" required>
-                <input type="email" id="regEmail" placeholder="Email" required>
-                <input type="password" id="regPassword" placeholder="Password" required>
-                <button type="submit">Register</button>
+                <div class="input-group input-group-with-icon">
+                    <i class="fas fa-user"></i>
+                    <input type="text" id="regFullName" placeholder="Full Name" required>
+                </div>
+                <div class="input-group input-group-with-icon">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" id="regEmail" placeholder="Email Address" required>
+                </div>
+                <div class="input-group input-group-with-icon">
+                    <i class="fas fa-phone"></i>
+                    <input type="tel" id="regMobile" placeholder="Mobile Number (e.g., 0788123456)" required>
+                </div>
+                <div class="input-group input-group-with-icon">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="regPassword" placeholder="Password (min 6 characters)" required>
+                </div>
+                <div class="input-group input-group-with-icon">
+                    <i class="fas fa-check-circle"></i>
+                    <input type="password" id="regConfirmPassword" placeholder="Confirm Password" required>
+                </div>
+                <div class="checkbox-group">
+                    <label><input type="checkbox" id="termsCheckbox" required> I agree to the <a href="#">Terms & Conditions</a></label>
+                </div>
+                <button type="submit" class="submit-btn"><i class="fas fa-user-plus"></i> Create Account & Continue</button>
             </form>
+            <div class="divider"><span>OR</span></div>
+            <button id="googleRegisterBtn" class="google-btn"><i class="fab fa-google"></i> Sign up with Google</button>
         </div>
-
     </div>
 </div>
 
 <script>
-    // (ALL YOUR ORIGINAL JS — UNCHANGED ABOVE)
-
+    // Cart data - loaded from localStorage (shared with all pages)
+    let cart = [];
+    let currentUser = null;
+    
+    // Product database for price lookup (same as shop.html)
+    const productsData = [
+        { id: 1, name: "Paracetamol 500mg", price: 1200 },
+        { id: 2, name: "Ibuprofen 400mg", price: 2500 },
+        { id: 3, name: "Amoxicillin 500mg", price: 3800 },
+        { id: 4, name: "Vitamin C + Zinc", price: 5400 },
+        { id: 5, name: "Omeprazole 20mg", price: 3600 },
+        { id: 6, name: "Cetirizine 10mg", price: 1900 },
+        { id: 7, name: "Azithromycin 500mg", price: 5200 },
+        { id: 8, name: "Multivitamin Daily", price: 8900 }
+    ];
+    
+    // Load cart from localStorage
+    function loadCart() {
+        const saved = localStorage.getItem('bermacy_cart');
+        if(saved) {
+            try {
+                cart = JSON.parse(saved);
+                if(!Array.isArray(cart)) cart = [];
+            } catch(e) { cart = []; }
+        } else {
+            cart = [];
+        }
+        updateCartPreview();
+    }
+    
+    // Update cart preview in login page
+    function updateCartPreview() {
+        const container = document.getElementById('cartItemsPreview');
+        const totalContainer = document.getElementById('cartTotalPreview');
+        
+        if(cart.length === 0) {
+            container.innerHTML = '<div style="text-align:center; padding:10px;">Your cart is empty. <a href="shop.html" style="color:#2c9c8f;">Shop now</a></div>';
+            totalContainer.innerHTML = 'Total: 0 RWF';
+            return;
+        }
+        
+        let html = '';
+        let total = 0;
+        cart.forEach(item => {
+            const product = productsData.find(p => p.id === item.id);
+            if(product) {
+                const itemTotal = product.price * item.quantity;
+                total += itemTotal;
+                html += `<div class="cart-item-preview">
+                    <span>${product.name} x ${item.quantity}</span>
+                    <span>${itemTotal.toLocaleString()} RWF</span>
+                </div>`;
+            }
+        });
+        container.innerHTML = html;
+        totalContainer.innerHTML = `Total: ${total.toLocaleString()} RWF`;
+    }
+    
+    // Save cart to localStorage (persist across pages)
+    function saveCart() {
+        localStorage.setItem('bermacy_cart', JSON.stringify(cart));
+    }
+    
+    // User management functions
+    function getUsers() {
+        const users = localStorage.getItem('bermacy_users');
+        return users ? JSON.parse(users) : [];
+    }
+    
+    function saveUsers(users) {
+        localStorage.setItem('bermacy_users', JSON.stringify(users));
+    }
+    
+    function findUserByEmail(email) {
+        const users = getUsers();
+        return users.find(u => u.email === email);
+    }
+    
+    function findUserByMobile(mobile) {
+        const users = getUsers();
+        return users.find(u => u.mobile === mobile);
+    }
+    
+    function registerUser(name, email, mobile, password) {
+        const users = getUsers();
+        
+        // Check if email already exists
+        if(users.find(u => u.email === email)) {
+            return { success: false, message: 'Email already registered. Please login.' };
+        }
+        
+        // Check if mobile already exists
+        if(users.find(u => u.mobile === mobile)) {
+            return { success: false, message: 'Mobile number already registered. Please login.' };
+        }
+        
+        const newUser = {
+            id: Date.now(),
+            name: name,
+            email: email,
+            mobile: mobile,
+            password: password, // In production, this should be hashed
+            createdAt: new Date().toISOString(),
+            cart: cart // Save current cart to user account
+        };
+        
+        users.push(newUser);
+        saveUsers(users);
+        
+        return { success: true, user: newUser };
+    }
+    
+    function loginUser(identifier, password) {
+        const users = getUsers();
+        // Check by email or mobile
+        const user = users.find(u => (u.email === identifier || u.mobile === identifier) && u.password === password);
+        
+        if(user) {
+            return { success: true, user: user };
+        }
+        return { success: false, message: 'Invalid credentials. Please check your email/mobile and password.' };
+    }
+    
+    function showError(message) {
+        const errorDiv = document.getElementById('errorMessage');
+        errorDiv.textContent = message;
+        errorDiv.style.display = 'block';
+        setTimeout(() => {
+            errorDiv.style.display = 'none';
+        }, 4000);
+    }
+    
+    function showSuccess(message) {
+        const successDiv = document.getElementById('successMessage');
+        successDiv.textContent = message;
+        successDiv.style.display = 'block';
+        setTimeout(() => {
+            successDiv.style.display = 'none';
+        }, 3000);
+    }
+    
+    // Redirect to payment.php with cart and user data
+    function redirectToPayment(user) {
+        // Save current cart to localStorage (ensure it's persisted)
+        saveCart();
+        
+        // Save current user session
+        const session = {
+            userId: user.id,
+            name: user.name,
+            email: user.email,
+            mobile: user.mobile,
+            loginTime: new Date().toISOString()
+        };
+        localStorage.setItem('bermacy_session', JSON.stringify(session));
+        
+        // Create form to POST data to payment.php
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = 'payment.php';
+        
+        // Add cart data as JSON
+        const cartInput = document.createElement('input');
+        cartInput.type = 'hidden';
+        cartInput.name = 'cart_data';
+        cartInput.value = JSON.stringify(cart);
+        form.appendChild(cartInput);
+        
+        // Add user data
+        const userInput = document.createElement('input');
+        userInput.type = 'hidden';
+        userInput.name = 'user_data';
+        userInput.value = JSON.stringify({
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            mobile: user.mobile
+        });
+        form.appendChild(userInput);
+        
+        // Add total amount
+        let total = 0;
+        cart.forEach(item => {
+            const product = productsData.find(p => p.id === item.id);
+            if(product) total += product.price * item.quantity;
+        });
+        const totalInput = document.createElement('input');
+        totalInput.type = 'hidden';
+        totalInput.name = 'total_amount';
+        totalInput.value = total;
+        form.appendChild(totalInput);
+        
+        document.body.appendChild(form);
+        form.submit();
+    }
+    
     // Tab switching
     const tabBtns = document.querySelectorAll('.tab-btn');
     const loginPanel = document.getElementById('loginPanel');
     const registerPanel = document.getElementById('registerPanel');
-
+    
     tabBtns.forEach(btn => {
         btn.addEventListener('click', () => {
             const tab = btn.dataset.tab;
@@ -133,14 +585,4 @@
             
             if(tab === 'login') {
                 loginPanel.classList.add('active');
-                registerPanel.classList.remove('active');
-            } else {
-                loginPanel.classList.remove('active');
-                registerPanel.classList.add('active'); // ✅ FIXED ONLY LINE
-            }
-        });
-    });
-</script>
-
-</body>
-</html>
+                registerPanel.classList.remove('active')
