@@ -4,82 +4,79 @@ Bermacy is a client-side E-commerce pharmacy website built using HTML, CSS & Js 
 
 Core Features
 
-	Online Medicine Shop: Product listing, search, filtering, sorting, and cart system
+👉Online Medicine Shop: Product listing, search, filtering, sorting, and cart system
 
-	User Authentication: Registration and login using email or mobile
+👉User Authentication: Registration and login using email or mobile
 
-	Cart & Checkout: Persistent cart with real-time updates
+👉Cart & Checkout: Persistent cart with real-time updates
 
-	Payment System: Supports MTN MoMo, Airtel Money, Cards, and PayPal with validation
+👉Payment System: Supports MTN MoMo, Airtel Money, Cards, and PayPal with 👉validation
 
-	Prescription Upload: Users submit prescriptions for pharmacist review
+👉Health Blog: Articles with search and category filtering
 
-	Health Blog: Articles with search and category filtering
-
-	Contact System: Customer support form and FAQ
+👉Contact System: Customer support form and FAQ
 
 How the System Works
 
-o	User selects medicines → saved in localStorage
+👉User selects medicines → saved in localStorage
 
-o	User proceeds to checkout → login/register required
+👉User proceeds to checkout → login/register required
 
-o	Cart and user data passed via sessionStorage
+👉Cart and user data passed via sessionStorage
 
-o	User selects payment method → validation and confirmation
+👉User selects payment method → validation and confirmation
 
-o	Transaction ID generated → simulated email confirmation
+👉Transaction ID generated → simulated email confirmation
 
-o	Cart cleared → user redirected to homepage
+👉Cart cleared → user redirected to homepage
 
 Data Management
 
- 	localStorage: stores cart, users, prescriptions, messages
+👉localStorage: stores cart, users, prescriptions, messages
 
- 	sessionStorage: handles temporary checkout data
+👉sessionStorage: handles temporary checkout data
 
- 	All operations happen in the browser
+👉operations happen in the browser
 
 Key Pages
 
-	Home (index): product display and quick cart
+👉Home (index): product display and quick cart
 
-	Shop: advanced filtering and full catalog
+👉Shop: advanced filtering and full catalog
 
-	Login: authentication system
+👉Login: authentication system
 
-	Payment: multi-method payment flow
+👉Payment: multi-method payment flow
 
-	Blog: health education content
+👉Blog: health education content
 
-	Prescriptions: upload and track status
+👉Prescriptions: upload and track status
 
-	Contact: support and inquiries
+👉Contact: support and inquiries
 
 Strengths
 
-o	Fully functional without backend
+👉Fully functional without backend
 
-o	Simple deployment 
+👉Simple deployment 
 
-o	Complete E-commerce flow (cart → payment → confirmation)
+👉Complete E-commerce flow (cart → payment → confirmation)
 
 Limitations
 
-o	No real payment integration
+👉No real payment integration
 
-o	Passwords stored insecurely (plaintext)
+👉Passwords stored insecurely (plaintext)
 
-o	No backend (no real order tracking or admin panel)
+👉No backend (no real order tracking or admin panel)
 
-o	Email and uploads are simulated
+👉Email and uploads are simulated
 
 
 
 Conclusion
 
 Bermacy is a complete front-end pharmacy system demonstrating how a full e-commerce workflow can run entirely in the browser. It is suitable for learning, prototyping, or small-scale deployment, with clear potential for future backend integration.
-
 
 
 
