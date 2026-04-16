@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>Bermacy RW | Login / Register - Secure Checkout</title>
-    <!-- Font Awesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- Google Fonts: Poppins -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         * {
@@ -22,8 +20,6 @@
             display: flex;
             flex-direction: column;
         }
-
-        /* Simple Header for Login Page */
         .simple-header {
             background: #0b3b3f;
             color: white;
@@ -54,8 +50,6 @@
         .back-to-shop:hover {
             background: rgba(255,255,255,0.3);
         }
-
-        /* Login Container */
         .login-container {
             flex: 1;
             display: flex;
@@ -298,8 +292,6 @@
             <h2><i class="fas fa-lock"></i> Secure Checkout</h2>
             <p>Login or create an account to complete your order</p>
         </div>
-
-        <!-- Cart Summary Preview -->
         <div class="cart-summary" id="cartSummary">
             <h4><i class="fas fa-shopping-bag"></i> Your Cart Summary</h4>
             <div class="cart-items-preview" id="cartItemsPreview">
@@ -307,18 +299,12 @@
             </div>
             <div class="cart-total-preview" id="cartTotalPreview">Total: 0 RWF</div>
         </div>
-
-        <!-- Tab Buttons -->
         <div class="tab-buttons">
             <button class="tab-btn active" data-tab="login">Login</button>
             <button class="tab-btn" data-tab="register">Register</button>
         </div>
-
-        <!-- Error/Success Messages -->
         <div id="errorMessage" class="error-message"></div>
         <div id="successMessage" class="success-message"></div>
-
-        <!-- Login Form -->
         <div id="loginPanel" class="form-panel active">
             <form id="loginForm">
                 <div class="input-group input-group-with-icon">
@@ -342,8 +328,6 @@
             <div class="divider"><span>OR</span></div>
             <button id="googleLoginBtn" class="google-btn"><i class="fab fa-google"></i> Continue with Google</button>
         </div>
-
-        <!-- Register Form -->
         <div id="registerPanel" class="form-panel">
             <form id="registerForm">
                 <div class="input-group input-group-with-icon">
@@ -378,7 +362,6 @@
 </div>
 
 <script>
-    // ======================== PRODUCT DATABASE ========================
     const productsData = [
         { id: 1, name: "Paracetamol 500mg", price: 1200 },
         { id: 2, name: "Ibuprofen 400mg", price: 2500 },
@@ -390,8 +373,6 @@
         { id: 8, name: "Multivitamin Daily", price: 8900 },
         { id: 9, name: "Loperamide 2mg", price: 2100 }
     ];
-
-    // ======================== CART MANAGEMENT ========================
     let cart = [];
 
     function loadCart() {
@@ -402,7 +383,6 @@
                 if(!Array.isArray(cart)) cart = [];
             } catch(e) { cart = []; }
         } else {
-            // Demo cart for testing
             cart = [
                 { id: 1, quantity: 2 },
                 { id: 3, quantity: 1 }
@@ -452,8 +432,6 @@
     function saveCart() {
         localStorage.setItem('bermacy_cart', JSON.stringify(cart));
     }
-
-    // ======================== USER MANAGEMENT ========================
     function getUsers() {
         const users = localStorage.getItem('bermacy_users');
         return users ? JSON.parse(users) : [];
@@ -498,13 +476,8 @@
         }
         return { success: false, message: 'Invalid credentials. Please check your email/mobile and password.' };
     }
-
-    // ======================== REDIRECT TO PAYMENT.HTML (FIXED - USING URL PARAMETERS) ========================
     function redirectToPayment(user) {
-        // Save cart to localStorage before redirect
         saveCart();
-        
-        // Save user session
         localStorage.setItem('bermacy_session', JSON.stringify({
             userId: user.id,
             name: user.name,
@@ -512,11 +485,9 @@
             mobile: user.mobile,
             loginTime: new Date().toISOString()
         }));
-        
-        // Calculate total
+    
         const total = getCartTotal();
         
-        // Prepare data for URL parameters
         const cartDataEncoded = encodeURIComponent(JSON.stringify(cart));
         const userDataEncoded = encodeURIComponent(JSON.stringify({
             id: user.id,
@@ -524,11 +495,7 @@
             email: user.email,
             mobile: user.mobile
         }));
-        
-        // Build payment.html URL with query parameters
         const paymentUrl = `payment.html?cart_data=${cartDataEncoded}&user_data=${userDataEncoded}&total_amount=${total}`;
-        
-        // Also store in sessionStorage as backup for payment.html to read
         sessionStorage.setItem('pendingCart', JSON.stringify(cart));
         sessionStorage.setItem('pendingUser', JSON.stringify({
             id: user.id,
@@ -537,12 +504,8 @@
             mobile: user.mobile
         }));
         sessionStorage.setItem('pendingTotal', total.toString());
-        
-        // Redirect to payment page
         window.location.href = paymentUrl;
     }
-
-    // ======================== UI HELPERS ========================
     function showError(message) {
         const errorDiv = document.getElementById('errorMessage');
         errorDiv.textContent = message;
@@ -564,9 +527,6 @@
     function goToShop() {
         window.location.href = 'shop.html';
     }
-
-    // ======================== EVENT HANDLERS ========================
-    // Tab switching
     const tabBtns = document.querySelectorAll('.tab-btn');
     const loginPanel = document.getElementById('loginPanel');
     const registerPanel = document.getElementById('registerPanel');
@@ -586,8 +546,6 @@
             }
         });
     });
-    
-    // Login Form Handler
     document.getElementById('loginForm').addEventListener('submit', (e) => {
         e.preventDefault();
         
@@ -618,8 +576,6 @@
             showError(result.message);
         }
     });
-    
-    // Register Form Handler
     document.getElementById('registerForm').addEventListener('submit', (e) => {
         e.preventDefault();
         
@@ -650,7 +606,6 @@
             return;
         }
         
-        // Validate mobile format
         const mobileRegex = /^07[0-9]{8}$/;
         if(!mobileRegex.test(mobile)) {
             showError('Please enter a valid mobile number (e.g., 0788123456)');
@@ -668,8 +623,6 @@
             showError(result.message);
         }
     });
-    
-    // Google Auth Simulation
     function handleGoogleAuth() {
         const googleEmail = prompt('Enter your Google email address:', 'user@gmail.com');
         if(!googleEmail) return;
@@ -701,14 +654,10 @@
     
     document.getElementById('googleLoginBtn').addEventListener('click', handleGoogleAuth);
     document.getElementById('googleRegisterBtn').addEventListener('click', handleGoogleAuth);
-    
-    // Forgot password handler
     document.getElementById('forgotPassword').addEventListener('click', (e) => {
         e.preventDefault();
         showError('Please contact support at care@bermacy.rw to reset your password');
     });
-    
-    // Load cart on page load
     loadCart();
 </script>
 </body>
