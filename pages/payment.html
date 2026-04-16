@@ -1,258 +1,3 @@
-<?php
-session_start();
-
-// Enable error reporting for debugging (disable in production)
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
-// Email configuration (for sending confirmation emails)
-// In production, use PHPMailer or your SMTP settings
-$admin_email = "care@bermacy.rw";
-$company_name = "Bermacy RW";
-
-// Get cart data from POST (sent from login.html)
-$cart_data = isset($_POST['cart_data']) ? json_decode($_POST['cart_data'], true) : [];
-$user_data = isset($_POST['user_data']) ? json_decode($_POST['user_data'], true) : [];
-$total_amount = isset($_POST['total_amount']) ? (float)$_POST['total_amount'] : 0;
-
-// If no POST data, try to get from session (fallback)
-if(empty($cart_data) && isset($_SESSION['pending_cart'])) {
-    $cart_data = $_SESSION['pending_cart'];
-    $user_data = $_SESSION['pending_user'];
-    $total_amount = $_SESSION['pending_total'];
-}
-
-// If still no data, redirect back to shop
-if(empty($cart_data)) {
-    header("Location: Shop.html");
-    exit();
-}
-
-// Store in session for persistence
-$_SESSION['pending_cart'] = $cart_data;
-$_SESSION['pending_user'] = $user_data;
-$_SESSION['pending_total'] = $total_amount;
-
-// Product database for price reference
-$products_db = [
-    1 => ["name" => "Paracetamol 500mg", "price" => 1200],
-    2 => ["name" => "Ibuprofen 400mg", "price" => 2500],
-    3 => ["name" => "Amoxicillin 500mg", "price" => 3800],
-    4 => ["name" => "Vitamin C + Zinc", "price" => 5400],
-    5 => ["name" => "Omeprazole 20mg", "price" => 3600],
-    6 => ["name" => "Cetirizine 10mg", "price" => 1900],
-    7 => ["name" => "Azithromycin 500mg", "price" => 5200],
-    8 => ["name" => "Multivitamin Daily", "price" => 8900],
-    9 => ["name" => "Loperamide 2mg", "price" => 2100]
-];
-
-// Function to send email confirmation
-function sendPaymentConfirmation($email, $name, $amount, $payment_method, $cart_items, $transaction_id) {
-    $subject = "Payment Confirmation - Bermacy RW Order #" . $transaction_id;
-    
-    // Build cart items HTML
-    $items_html = "";
-    foreach($cart_items as $item) {
-        global $products_db;
-        $product = $products_db[$item['id']] ?? null;
-        if($product) {
-            $items_html .= "<tr>
-                <td style='padding:8px; border-bottom:1px solid #ddd;'>{$product['name']}</td>
-                <td style='padding:8px; border-bottom:1px solid #ddd; text-align:center;'>{$item['quantity']}</td>
-                <td style='padding:8px; border-bottom:1px solid #ddd; text-align:right;'>" . number_format($product['price'] * $item['quantity'], 0) . " RWF</td>
-            </tr>";
-        }
-    }
-    
-    $message = "
-    <html>
-    <head>
-        <title>Payment Confirmation - Bermacy RW</title>
-        <style>
-            body { font-family: Arial, sans-serif; background-color: #f4f9fc; }
-            .container { max-width: 600px; margin: 0 auto; background: white; border-radius: 20px; padding: 30px; }
-            .header { background: #0b3b3f; color: white; padding: 20px; text-align: center; border-radius: 15px 15px 0 0; }
-            .content { padding: 20px; }
-            .total { font-size: 24px; font-weight: bold; color: #156f68; text-align: right; margin-top: 15px; padding-top: 10px; border-top: 2px solid #e0ecea; }
-            .footer { text-align: center; padding-top: 20px; font-size: 12px; color: #6c8b89; }
-            table { width: 100%; border-collapse: collapse; margin: 15px 0; }
-        </style>
-    </head>
-    <body>
-        <div class='container'>
-            <div class='header'>
-                <h2>BERMACY RW</h2>
-                <p>Payment Confirmation</p>
-            </div>
-            <div class='content'>
-                <p>Dear <strong>" . htmlspecialchars($name) . "</strong>,</p>
-                <p>Thank you for your order! Your payment has been successfully processed.</p>
-                
-                <h3>Order Details</h3>
-                <p><strong>Transaction ID:</strong> " . $transaction_id . "</p>
-                <p><strong>Payment Method:</strong> " . htmlspecialchars($payment_method) . "</p>
-                <p><strong>Date:</strong> " . date('F j, Y, g:i a') . "</p>
-                
-                <h3>Items Ordered</h3>
-                <table>
-                    <tr style='background:#eef3f2;'>
-                        <th>Medicine</th>
-                        <th>Qty</th>
-                        <th>Total</th>
-                    </tr>
-                    " . $items_html . "
-                </table>
-                
-                <div class='total'>
-                    Total Amount: " . number_format($amount, 0) . " RWF
-                </div>
-                
-                <p>Your medicines will be delivered to your registered address within 2-3 business days.</p>
-                <p>For any inquiries, please contact us at care@bermacy.rw or call +250 788 123 456.</p>
-            </div>
-            <div class='footer'>
-                <p>© 2025 Bermacy RW - Your Trusted Pharmacy Partner in Rwanda</p>
-            </div>
-        </div>
-    </body>
-    </html>
-    ";
-    
-    $headers = "MIME-Version: 1.0" . "\r\n";
-    $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-    $headers .= "From: Bermacy RW <care@bermacy.rw>" . "\r\n";
-    
-    // In production, you would use a real SMTP server
-    // For demo, we'll simulate sending and store in session
-    $_SESSION['last_email'] = [
-        'to' => $email,
-        'subject' => $subject,
-        'message' => $message
-    ];
-    
-    // Actually send email (uncomment in production with proper SMTP)
-    // mail($email, $subject, $message, $headers);
-    
-    return true;
-}
-
-// Process payment based on method
-$payment_status = "";
-$error_message = "";
-$transaction_id = "BER" . time() . rand(1000, 9999);
-
-if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['payment_action'])) {
-    $payment_method = $_POST['payment_method'] ?? '';
-    $payment_number = $_POST['payment_number'] ?? '';
-    $card_number = $_POST['card_number'] ?? '';
-    $card_expiry = $_POST['card_expiry'] ?? '';
-    $card_cvv = $_POST['card_cvv'] ?? '';
-    $paypal_email = $_POST['paypal_email'] ?? '';
-    
-    $user_name = $user_data['name'] ?? 'Customer';
-    $user_email = $user_data['email'] ?? '';
-    
-    if($payment_method == 'mtn') {
-        // Validate MTN number (078xxxxxxx or 079xxxxxxx, 10 digits total)
-        if(preg_match('/^(078|079)[0-9]{7}$/', $payment_number)) {
-            $payment_status = "success";
-            sendPaymentConfirmation($user_email, $user_name, $total_amount, "MTN Mobile Money", $cart_data, $transaction_id);
-            // Clear session cart after successful payment
-            unset($_SESSION['pending_cart']);
-            unset($_SESSION['pending_user']);
-            unset($_SESSION['pending_total']);
-        } else {
-            $error_message = "Invalid MTN number! Must start with 078 or 079 and be 10 digits total.";
-        }
-    } 
-    elseif($payment_method == 'airtel') {
-        // Validate Airtel number (072xxxxxxx or 073xxxxxxx, 10 digits total)
-        if(preg_match('/^(072|073)[0-9]{7}$/', $payment_number)) {
-            $payment_status = "success";
-            sendPaymentConfirmation($user_email, $user_name, $total_amount, "Airtel Money", $cart_data, $transaction_id);
-            unset($_SESSION['pending_cart']);
-            unset($_SESSION['pending_user']);
-            unset($_SESSION['pending_total']);
-        } else {
-            $error_message = "Invalid Airtel number! Must start with 072 or 073 and be 10 digits total.";
-        }
-    }
-    elseif($payment_method == 'card') {
-        // Validate card number (basic validation for demo)
-        $card_type = "";
-        if(preg_match('/^4[0-9]{12}(?:[0-9]{3})?$/', $card_number)) {
-            $card_type = "Visa";
-        } elseif(preg_match('/^5[1-5][0-9]{14}$/', $card_number)) {
-            $card_type = "Mastercard";
-        } elseif(preg_match('/^[0-9]{16}$/', $card_number)) {
-            $card_type = "Card";
-        } else {
-            $error_message = "Invalid card number! Please enter a valid 16-digit card number.";
-        }
-        
-        if(empty($error_message) && !empty($card_expiry) && !empty($card_cvv)) {
-            $payment_status = "success";
-            sendPaymentConfirmation($user_email, $user_name, $total_amount, $card_type . " Card", $cart_data, $transaction_id);
-            unset($_SESSION['pending_cart']);
-            unset($_SESSION['pending_user']);
-            unset($_SESSION['pending_total']);
-        } elseif(empty($error_message)) {
-            $error_message = "Please fill in all card details (expiry date and CVV).";
-        }
-    }
-    elseif($payment_method == 'paypal') {
-        // Validate PayPal email
-        if(filter_var($paypal_email, FILTER_VALIDATE_EMAIL)) {
-            $payment_status = "success";
-            sendPaymentConfirmation($user_email, $user_name, $total_amount, "PayPal", $cart_data, $transaction_id);
-            unset($_SESSION['pending_cart']);
-            unset($_SESSION['pending_user']);
-            unset($_SESSION['pending_total']);
-        } else {
-            $error_message = "Invalid PayPal email address!";
-        }
-    }
-}
-
-// If payment was successful, show success page
-if($payment_status == "success") {
-    ?>
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Payment Successful - Bermacy RW</title>
-        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-        <style>
-            * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-            body { background: linear-gradient(135deg, #d9f0ec, #c1e4df); min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 20px; }
-            .success-card { background: white; border-radius: 48px; max-width: 500px; width: 100%; padding: 45px 40px; text-align: center; box-shadow: 0 25px 50px rgba(0,0,0,0.15); }
-            .success-icon { width: 80px; height: 80px; background: #d4edda; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 25px; }
-            .success-icon i { font-size: 45px; color: #155724; }
-            h2 { color: #0a3b3a; margin-bottom: 15px; }
-            .transaction-id { background: #eef3f2; padding: 12px; border-radius: 30px; margin: 20px 0; font-family: monospace; }
-            .btn { display: inline-block; background: #0b5e5a; color: white; padding: 14px 35px; border-radius: 40px; text-decoration: none; font-weight: 600; margin-top: 20px; transition: 0.2s; }
-            .btn:hover { background: #094e4a; transform: translateY(-2px); }
-        </style>
-    </head>
-    <body>
-        <div class="success-card">
-            <div class="success-icon"><i class="fas fa-check-circle"></i></div>
-            <h2>Payment Successful! 🎉</h2>
-            <p>Your order has been confirmed and is being processed.</p>
-            <div class="transaction-id">Transaction ID: <?php echo $transaction_id; ?></div>
-            <p>A confirmation email has been sent to your registered email address.</p>
-            <a href="../index.html" class="btn"><i class="fas fa-home"></i> Return to Home</a>
-        </div>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    </body>
-    </html>
-    <?php
-    exit();
-}
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -304,6 +49,15 @@ if($payment_status == "success") {
         .row-2cols { display: flex; gap: 15px; }
         .row-2cols .input-group { flex: 1; }
         
+        .success-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: flex; justify-content: center; align-items: center; z-index: 1000; visibility: hidden; opacity: 0; transition: 0.2s; }
+        .success-overlay.active { visibility: visible; opacity: 1; }
+        .success-card { background: white; border-radius: 48px; max-width: 500px; width: 90%; padding: 45px 40px; text-align: center; box-shadow: 0 25px 50px rgba(0,0,0,0.15); }
+        .success-icon { width: 80px; height: 80px; background: #d4edda; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 25px; }
+        .success-icon i { font-size: 45px; color: #155724; }
+        .transaction-id { background: #eef3f2; padding: 12px; border-radius: 30px; margin: 20px 0; font-family: monospace; word-break: break-all; }
+        .btn-home { display: inline-block; background: #0b5e5a; color: white; padding: 14px 35px; border-radius: 40px; text-decoration: none; font-weight: 600; margin-top: 20px; transition: 0.2s; border: none; cursor: pointer; }
+        .btn-home:hover { background: #094e4a; transform: translateY(-2px); }
+        
         @media (max-width: 900px) { .payment-container { flex-direction: column; } }
     </style>
 </head>
@@ -313,28 +67,10 @@ if($payment_status == "success") {
     <!-- Order Summary -->
     <div class="order-summary">
         <h2><i class="fas fa-shopping-bag"></i> Order Summary</h2>
-        <div id="cartItemsList">
-            <?php 
-            $subtotal = 0;
-            foreach($cart_data as $item): 
-                $product = $products_db[$item['id']] ?? null;
-                if($product):
-                    $item_total = $product['price'] * $item['quantity'];
-                    $subtotal += $item_total;
-            ?>
-            <div class="cart-item">
-                <span><strong><?php echo htmlspecialchars($product['name']); ?></strong> x <?php echo $item['quantity']; ?></span>
-                <span><?php echo number_format($item_total, 0); ?> RWF</span>
-            </div>
-            <?php endif; endforeach; ?>
-            <div class="total-row">
-                <span>Total Amount</span>
-                <span style="color:#156f68; font-size:1.4rem;"><?php echo number_format($total_amount, 0); ?> RWF</span>
-            </div>
-        </div>
-        <div style="margin-top: 20px; padding: 15px; background: #eef3f2; border-radius: 20px;">
-            <p><i class="fas fa-user"></i> <strong>Customer:</strong> <?php echo htmlspecialchars($user_data['name'] ?? 'Guest'); ?></p>
-            <p><i class="fas fa-envelope"></i> <strong>Email:</strong> <?php echo htmlspecialchars($user_data['email'] ?? 'Not provided'); ?></p>
+        <div id="cartItemsList"></div>
+        <div style="margin-top: 20px; padding: 15px; background: #eef3f2; border-radius: 20px;" id="customerInfoBlock">
+            <p><i class="fas fa-user"></i> <strong>Customer:</strong> <span id="customerName">Loading...</span></p>
+            <p><i class="fas fa-envelope"></i> <strong>Email:</strong> <span id="customerEmail">Loading...</span></p>
         </div>
     </div>
 
@@ -342,7 +78,6 @@ if($payment_status == "success") {
     <div class="payment-section">
         <h2><i class="fas fa-credit-card"></i> Select Payment Method</h2>
         
-        <!-- Payment Method Tabs -->
         <div class="payment-methods">
             <button class="method-btn" data-method="mtn"><i class="fas fa-mobile-alt"></i> MTN MoMo</button>
             <button class="method-btn" data-method="airtel"><i class="fas fa-mobile-alt"></i> Airtel Money</button>
@@ -408,29 +143,254 @@ if($payment_status == "success") {
             <div id="paypalError" class="error-msg"></div>
         </div>
         
-        <!-- Warning Message -->
         <div id="warningMsg" style="margin-top: 20px; padding: 12px; background: #fff3cd; border-radius: 30px; display: none; font-size: 0.8rem;">
             <i class="fas fa-exclamation-triangle"></i> Warning: Please complete your payment. Do not navigate back without confirming payment.
         </div>
     </div>
 </div>
 
-<form id="paymentForm" method="POST" style="display: none;">
-    <input type="hidden" name="payment_action" value="1">
-    <input type="hidden" name="payment_method" id="hiddenMethod">
-    <input type="hidden" name="payment_number" id="hiddenNumber">
-    <input type="hidden" name="card_number" id="hiddenCardNumber">
-    <input type="hidden" name="card_expiry" id="hiddenCardExpiry">
-    <input type="hidden" name="card_cvv" id="hiddenCardCvv">
-    <input type="hidden" name="paypal_email" id="hiddenPaypalEmail">
-</form>
+<!-- Success Modal (replaces PHP success page) -->
+<div id="successOverlay" class="success-overlay">
+    <div class="success-card">
+        <div class="success-icon"><i class="fas fa-check-circle"></i></div>
+        <h2>Payment Successful! 🎉</h2>
+        <p>Your order has been confirmed and is being processed.</p>
+        <div class="transaction-id" id="transactionIdDisplay">BER000000</div>
+        <p>A confirmation email has been sent to your registered email address.</p>
+        <button onclick="goHome()" class="btn-home"><i class="fas fa-home"></i> Return to Home</button>
+    </div>
+</div>
 
 <script>
+    // ======================== PRODUCT DATABASE ========================
+    const productsDB = {
+        1: { name: "Paracetamol 500mg", price: 1200 },
+        2: { name: "Ibuprofen 400mg", price: 2500 },
+        3: { name: "Amoxicillin 500mg", price: 3800 },
+        4: { name: "Vitamin C + Zinc", price: 5400 },
+        5: { name: "Omeprazole 20mg", price: 3600 },
+        6: { name: "Cetirizine 10mg", price: 1900 },
+        7: { name: "Azithromycin 500mg", price: 5200 },
+        8: { name: "Multivitamin Daily", price: 8900 },
+        9: { name: "Loperamide 2mg", price: 2100 }
+    };
+
+    // ======================== DATA LOADING (from URL parameters or sessionStorage) ========================
+    let cartData = [];
+    let userData = {};
+    let totalAmount = 0;
+
+    function loadDataFromStorageOrUrl() {
+        // Try to get from sessionStorage (set by login.html or previous page)
+        const storedCart = sessionStorage.getItem('pendingCart');
+        const storedUser = sessionStorage.getItem('pendingUser');
+        const storedTotal = sessionStorage.getItem('pendingTotal');
+        
+        if (storedCart && storedUser && storedTotal) {
+            try {
+                cartData = JSON.parse(storedCart);
+                userData = JSON.parse(storedUser);
+                totalAmount = parseFloat(storedTotal);
+                return;
+            } catch(e) { console.warn(e); }
+        }
+        
+        // Fallback: try to parse from URL parameters (for demo)
+        const urlParams = new URLSearchParams(window.location.search);
+        const cartParam = urlParams.get('cart_data');
+        const userParam = urlParams.get('user_data');
+        const totalParam = urlParams.get('total_amount');
+        
+        if (cartParam && userParam && totalParam) {
+            try {
+                cartData = JSON.parse(decodeURIComponent(cartParam));
+                userData = JSON.parse(decodeURIComponent(userParam));
+                totalAmount = parseFloat(totalParam);
+                // Store for persistence
+                sessionStorage.setItem('pendingCart', JSON.stringify(cartData));
+                sessionStorage.setItem('pendingUser', JSON.stringify(userData));
+                sessionStorage.setItem('pendingTotal', totalAmount.toString());
+                return;
+            } catch(e) { console.warn(e); }
+        }
+        
+        // DEMO DATA if nothing exists (for testing the page standalone)
+        cartData = [
+            { id: 1, quantity: 2 },
+            { id: 3, quantity: 1 },
+            { id: 5, quantity: 1 }
+        ];
+        userData = { name: "Alex Munezero", email: "alex@example.com" };
+        totalAmount = (1200*2) + 3800 + 3600; // = 2400+3800+3600 = 9800
+        sessionStorage.setItem('pendingCart', JSON.stringify(cartData));
+        sessionStorage.setItem('pendingUser', JSON.stringify(userData));
+        sessionStorage.setItem('pendingTotal', totalAmount.toString());
+    }
+
+    function renderOrderSummary() {
+        const container = document.getElementById('cartItemsList');
+        if (!container) return;
+        let subtotal = 0;
+        let html = '';
+        for (let item of cartData) {
+            const product = productsDB[item.id];
+            if (product) {
+                const itemTotal = product.price * item.quantity;
+                subtotal += itemTotal;
+                html += `<div class="cart-item">
+                            <span><strong>${escapeHtml(product.name)}</strong> x ${item.quantity}</span>
+                            <span>${itemTotal.toLocaleString()} RWF</span>
+                         </div>`;
+            }
+        }
+        html += `<div class="total-row">
+                    <span>Total Amount</span>
+                    <span style="color:#156f68; font-size:1.4rem;">${subtotal.toLocaleString()} RWF</span>
+                 </div>`;
+        container.innerHTML = html;
+        totalAmount = subtotal;
+        document.getElementById('customerName').innerText = escapeHtml(userData.name || 'Guest');
+        document.getElementById('customerEmail').innerText = escapeHtml(userData.email || 'Not provided');
+    }
+
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        });
+    }
+
+    // ======================== EMAIL SIMULATION (internal, console + alert for demo) ========================
+    // In a real scenario this would call an SMTP API. Here we simulate and store/show.
+    function sendPaymentConfirmation(email, name, amount, paymentMethod, cartItems, transactionId) {
+        // Build cart summary for email simulation
+        let itemsSummary = [];
+        for (let item of cartItems) {
+            const product = productsDB[item.id];
+            if(product) {
+                itemsSummary.push(`${product.name} x${item.quantity} = ${(product.price * item.quantity).toLocaleString()} RWF`);
+            }
+        }
+        const emailContent = `
+            BERMACY RW - Payment Confirmation (Order #${transactionId})
+            Dear ${name},
+            Thank you for your order! Payment of ${amount.toLocaleString()} RWF via ${paymentMethod} was successful.
+            Items: ${itemsSummary.join(', ')}
+            Delivery within 2-3 business days.
+            - Bermacy Team
+        `;
+        console.log("📧 CONFIRMATION EMAIL SENT (simulated):");
+        console.log(`To: ${email}`);
+        console.log(`Subject: Payment Confirmation - Bermacy RW Order #${transactionId}`);
+        console.log(emailContent);
+        
+        // Also store in sessionStorage for demo visibility
+        sessionStorage.setItem('lastEmailSimulated', JSON.stringify({
+            to: email,
+            subject: `Payment Confirmation - Bermacy RW Order #${transactionId}`,
+            body: emailContent,
+            timestamp: new Date().toISOString()
+        }));
+        
+        // Optional: show an alert in demo mode (non-intrusive)
+        // We don't alert to avoid double popup, but we keep the simulation.
+        return true;
+    }
+
+    // ======================== PAYMENT PROCESSING (frontend logic) ========================
+    function processPayment(paymentMethod, details) {
+        // Generate transaction ID similar to PHP: BER + timestamp + random
+        const transactionId = "BER" + Date.now() + Math.floor(Math.random() * 9000 + 1000);
+        let isValid = false;
+        let errorMsg = "";
+        
+        if (paymentMethod === 'mtn') {
+            const number = details.number;
+            if (/^(078|079)[0-9]{7}$/.test(number) && number.length === 10) {
+                isValid = true;
+            } else {
+                errorMsg = "Invalid MTN number! Must start with 078 or 079 and be 10 digits total.";
+            }
+        } 
+        else if (paymentMethod === 'airtel') {
+            const number = details.number;
+            if (/^(072|073)[0-9]{7}$/.test(number) && number.length === 10) {
+                isValid = true;
+            } else {
+                errorMsg = "Invalid Airtel number! Must start with 072 or 073 and be 10 digits total.";
+            }
+        }
+        else if (paymentMethod === 'card') {
+            const cardNum = details.cardNumber.replace(/\s/g, '');
+            const expiry = details.expiry;
+            const cvv = details.cvv;
+            let cardValid = false;
+            if (/^4[0-9]{12}(?:[0-9]{3})?$/.test(cardNum)) cardValid = true;
+            else if (/^5[1-5][0-9]{14}$/.test(cardNum)) cardValid = true;
+            else if (/^[0-9]{16}$/.test(cardNum)) cardValid = true;
+            
+            if (cardValid && expiry && /^(0[1-9]|1[0-2])\/([0-9]{2})$/.test(expiry) && cvv && cvv.length >= 3 && cvv.length <= 4) {
+                isValid = true;
+            } else {
+                errorMsg = "Invalid card details! Please check card number, expiry date (MM/YY) and CVV.";
+            }
+        }
+        else if (paymentMethod === 'paypal') {
+            const email = details.email;
+            if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                isValid = true;
+            } else {
+                errorMsg = "Invalid PayPal email address!";
+            }
+        }
+        
+        if (isValid) {
+            // Send confirmation email (simulated)
+            sendPaymentConfirmation(
+                userData.email, 
+                userData.name, 
+                totalAmount, 
+                paymentMethod === 'card' ? (details.cardType || "Card") : 
+                (paymentMethod === 'mtn' ? "MTN Mobile Money" : 
+                (paymentMethod === 'airtel' ? "Airtel Money" : "PayPal")),
+                cartData,
+                transactionId
+            );
+            
+            // Clear session cart after successful payment
+            sessionStorage.removeItem('pendingCart');
+            sessionStorage.removeItem('pendingUser');
+            sessionStorage.removeItem('pendingTotal');
+            
+            // Show success modal
+            showSuccessModal(transactionId);
+            return true;
+        } else {
+            alert(errorMsg || "Payment verification failed. Please check your details.");
+            return false;
+        }
+    }
+    
+    function showSuccessModal(transactionId) {
+        const overlay = document.getElementById('successOverlay');
+        const txSpan = document.getElementById('transactionIdDisplay');
+        txSpan.innerText = transactionId;
+        overlay.classList.add('active');
+    }
+    
+    function goHome() {
+        window.location.href = "index.html"; // redirect to home page (adjust if needed)
+    }
+    
+    // ======================== UI VERIFICATION & SUBMIT HANDLERS ========================
+    let verified = { mtn: false, airtel: false, card: false, paypal: false };
+    let verifiedValue = { mtn: '', airtel: '', card: '', cardExpiry: '', cardCvv: '', paypal: '' };
+    
     // Tab switching
     let currentMethod = 'mtn';
-    let verified = { mtn: false, airtel: false, card: false, paypal: false };
-    let verifiedValue = { mtn: '', airtel: '', card: '', paypal: '' };
-    
     document.querySelectorAll('.method-btn').forEach(btn => {
         btn.addEventListener('click', () => {
             document.querySelectorAll('.method-btn').forEach(b => b.classList.remove('active'));
@@ -438,20 +398,16 @@ if($payment_status == "success") {
             currentMethod = btn.dataset.method;
             document.querySelectorAll('.payment-form').forEach(form => form.classList.remove('active'));
             document.getElementById(`${currentMethod}Form`).classList.add('active');
-            
-            // Reset warning
             document.getElementById('warningMsg').style.display = 'none';
         });
     });
     
-    // MTN Verification - detects network on first 3 digits
+    // MTN
     const mtnInput = document.getElementById('mtnNumber');
     const mtnFlash = document.getElementById('mtnFlash');
-    
     mtnInput.addEventListener('input', function() {
         let val = this.value.replace(/\D/g, '').substring(0, 10);
         this.value = val;
-        
         if(val.length >= 3) {
             let prefix = val.substring(0, 3);
             if(prefix === '078' || prefix === '079') {
@@ -463,32 +419,20 @@ if($payment_status == "success") {
                 mtnFlash.className = 'flash-message';
                 mtnFlash.style.display = 'flex';
             }
-        } else {
-            mtnFlash.style.display = 'none';
-        }
+        } else { mtnFlash.style.display = 'none'; }
     });
     
-    function verifyMtn() {
+    window.verifyMtn = function() {
         let number = document.getElementById('mtnNumber').value;
         let errorDiv = document.getElementById('mtnError');
         let confirmBtn = document.getElementById('confirmMtnBtn');
-        
-        if(number.length !== 10) {
-            errorDiv.textContent = 'Invalid MTN number! Must be exactly 10 digits.';
+        if(number.length !== 10 || !/^(078|079)[0-9]{7}$/.test(number)) {
+            errorDiv.textContent = 'Invalid MTN number! Must start with 078 or 079, exactly 10 digits.';
             errorDiv.style.display = 'block';
             confirmBtn.classList.remove('show');
             verified.mtn = false;
             return;
         }
-        
-        if(!/^(078|079)[0-9]{7}$/.test(number)) {
-            errorDiv.textContent = 'Invalid MTN number! Must start with 078 or 079.';
-            errorDiv.style.display = 'block';
-            confirmBtn.classList.remove('show');
-            verified.mtn = false;
-            return;
-        }
-        
         errorDiv.style.display = 'none';
         verified.mtn = true;
         verifiedValue.mtn = number;
@@ -497,16 +441,14 @@ if($payment_status == "success") {
         mtnFlash.className = 'flash-message mtn';
         mtnFlash.style.display = 'flex';
         document.getElementById('warningMsg').style.display = 'block';
-    }
+    };
     
-    // Airtel Verification
+    // Airtel
     const airtelInput = document.getElementById('airtelNumber');
     const airtelFlash = document.getElementById('airtelFlash');
-    
     airtelInput.addEventListener('input', function() {
         let val = this.value.replace(/\D/g, '').substring(0, 10);
         this.value = val;
-        
         if(val.length >= 3) {
             let prefix = val.substring(0, 3);
             if(prefix === '072' || prefix === '073') {
@@ -518,32 +460,20 @@ if($payment_status == "success") {
                 airtelFlash.className = 'flash-message';
                 airtelFlash.style.display = 'flex';
             }
-        } else {
-            airtelFlash.style.display = 'none';
-        }
+        } else { airtelFlash.style.display = 'none'; }
     });
     
-    function verifyAirtel() {
+    window.verifyAirtel = function() {
         let number = document.getElementById('airtelNumber').value;
         let errorDiv = document.getElementById('airtelError');
         let confirmBtn = document.getElementById('confirmAirtelBtn');
-        
-        if(number.length !== 10) {
-            errorDiv.textContent = 'Invalid Airtel number! Must be exactly 10 digits.';
+        if(number.length !== 10 || !/^(072|073)[0-9]{7}$/.test(number)) {
+            errorDiv.textContent = 'Invalid Airtel number! Must start with 072 or 073, exactly 10 digits.';
             errorDiv.style.display = 'block';
             confirmBtn.classList.remove('show');
             verified.airtel = false;
             return;
         }
-        
-        if(!/^(072|073)[0-9]{7}$/.test(number)) {
-            errorDiv.textContent = 'Invalid Airtel number! Must start with 072 or 073.';
-            errorDiv.style.display = 'block';
-            confirmBtn.classList.remove('show');
-            verified.airtel = false;
-            return;
-        }
-        
         errorDiv.style.display = 'none';
         verified.airtel = true;
         verifiedValue.airtel = number;
@@ -552,17 +482,15 @@ if($payment_status == "success") {
         airtelFlash.className = 'flash-message airtel';
         airtelFlash.style.display = 'flex';
         document.getElementById('warningMsg').style.display = 'block';
-    }
+    };
     
-    // Card Verification
+    // Card
     const cardInput = document.getElementById('cardNumber');
     const cardFlash = document.getElementById('cardFlash');
-    
     cardInput.addEventListener('input', function() {
         let val = this.value.replace(/\D/g, '').substring(0, 16);
         let formatted = val.replace(/(\d{4})/g, '$1 ').trim();
         this.value = formatted;
-        
         if(val.length >= 4) {
             let firstDigit = val.charAt(0);
             if(firstDigit === '4') {
@@ -578,18 +506,15 @@ if($payment_status == "success") {
                 cardFlash.className = 'flash-message';
                 cardFlash.style.display = 'flex';
             }
-        } else {
-            cardFlash.style.display = 'none';
-        }
+        } else { cardFlash.style.display = 'none'; }
     });
     
-    function verifyCard() {
+    window.verifyCard = function() {
         let cardNumber = document.getElementById('cardNumber').value.replace(/\D/g, '');
         let expiry = document.getElementById('cardExpiry').value;
         let cvv = document.getElementById('cardCvv').value;
         let errorDiv = document.getElementById('cardError');
         let confirmBtn = document.getElementById('confirmCardBtn');
-        
         if(cardNumber.length < 15 || cardNumber.length > 16) {
             errorDiv.textContent = 'Invalid card number! Please enter a valid 15-16 digit card number.';
             errorDiv.style.display = 'block';
@@ -597,7 +522,6 @@ if($payment_status == "success") {
             verified.card = false;
             return;
         }
-        
         if(!expiry.match(/^(0[1-9]|1[0-2])\/([0-9]{2})$/)) {
             errorDiv.textContent = 'Invalid expiry date! Use MM/YY format.';
             errorDiv.style.display = 'block';
@@ -605,7 +529,6 @@ if($payment_status == "success") {
             verified.card = false;
             return;
         }
-        
         if(cvv.length < 3 || cvv.length > 4) {
             errorDiv.textContent = 'Invalid CVV! Must be 3-4 digits.';
             errorDiv.style.display = 'block';
@@ -613,7 +536,6 @@ if($payment_status == "success") {
             verified.card = false;
             return;
         }
-        
         errorDiv.style.display = 'none';
         verified.card = true;
         verifiedValue.card = cardNumber;
@@ -623,15 +545,14 @@ if($payment_status == "success") {
         cardFlash.innerHTML = '<i class="fas fa-check-circle"></i> ✓ Card verified! Click confirm to complete payment.';
         cardFlash.style.display = 'flex';
         document.getElementById('warningMsg').style.display = 'block';
-    }
+    };
     
-    // PayPal Verification
-    function verifyPaypal() {
+    // PayPal
+    window.verifyPaypal = function() {
         let email = document.getElementById('paypalEmail').value;
         let errorDiv = document.getElementById('paypalError');
         let confirmBtn = document.getElementById('confirmPaypalBtn');
         let paypalFlash = document.getElementById('paypalFlash');
-        
         if(!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
             errorDiv.textContent = 'Invalid email address! Please enter a valid PayPal email.';
             errorDiv.style.display = 'block';
@@ -639,7 +560,6 @@ if($payment_status == "success") {
             verified.paypal = false;
             return;
         }
-        
         errorDiv.style.display = 'none';
         verified.paypal = true;
         verifiedValue.paypal = email;
@@ -648,51 +568,46 @@ if($payment_status == "success") {
         paypalFlash.className = 'flash-message paypal';
         paypalFlash.style.display = 'flex';
         document.getElementById('warningMsg').style.display = 'block';
-    }
+    };
     
-    // Submit payment
-    function submitPayment(method) {
+    window.submitPayment = function(method) {
         if(!verified[method]) {
             alert('Please verify your payment details first!');
             return;
         }
-        
-        let form = document.getElementById('paymentForm');
-        let hiddenMethod = document.getElementById('hiddenMethod');
-        let hiddenNumber = document.getElementById('hiddenNumber');
-        let hiddenCardNumber = document.getElementById('hiddenCardNumber');
-        let hiddenCardExpiry = document.getElementById('hiddenCardExpiry');
-        let hiddenCardCvv = document.getElementById('hiddenCardCvv');
-        let hiddenPaypalEmail = document.getElementById('hiddenPaypalEmail');
-        
-        hiddenMethod.value = method;
-        
-        if(method === 'mtn') {
-            hiddenNumber.value = verifiedValue.mtn;
-        } else if(method === 'airtel') {
-            hiddenNumber.value = verifiedValue.airtel;
-        } else if(method === 'card') {
-            hiddenCardNumber.value = verifiedValue.card;
-            hiddenCardExpiry.value = verifiedValue.cardExpiry;
-            hiddenCardCvv.value = verifiedValue.cardCvv;
-        } else if(method === 'paypal') {
-            hiddenPaypalEmail.value = verifiedValue.paypal;
+        let paymentDetails = {};
+        if (method === 'mtn') {
+            paymentDetails = { number: verifiedValue.mtn };
+        } else if (method === 'airtel') {
+            paymentDetails = { number: verifiedValue.airtel };
+        } else if (method === 'card') {
+            let cardNumRaw = verifiedValue.card;
+            let cardType = "Card";
+            if(cardNumRaw.charAt(0) === '4') cardType = "Visa";
+            else if(cardNumRaw.charAt(0) === '5') cardType = "Mastercard";
+            paymentDetails = { cardNumber: cardNumRaw, expiry: verifiedValue.cardExpiry, cvv: verifiedValue.cardCvv, cardType: cardType };
+        } else if (method === 'paypal') {
+            paymentDetails = { email: verifiedValue.paypal };
         }
         
-        form.submit();
-    }
+        const success = processPayment(method, paymentDetails);
+        if(!success) {
+            // error already shown
+        }
+    };
     
-    // Warn user before leaving page without payment
     window.addEventListener('beforeunload', function(e) {
         let anyVerified = verified.mtn || verified.airtel || verified.card || verified.paypal;
-        if(anyVerified) {
+        if(anyVerified && !sessionStorage.getItem('paymentCompleted')) {
             e.preventDefault();
             e.returnValue = 'You have not completed your payment. Are you sure you want to leave?';
             return 'You have not completed your payment. Are you sure you want to leave?';
         }
     });
     
-    // Set default active method
+    // Initial load
+    loadDataFromStorageOrUrl();
+    renderOrderSummary();
     document.querySelector('.method-btn').classList.add('active');
     document.getElementById('mtnForm').classList.add('active');
 </script>
