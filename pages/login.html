@@ -29,6 +29,7 @@
             color: white;
             padding: 15px 5%;
             text-align: center;
+            position: relative;
         }
         .simple-header h1 {
             font-size: 1.5rem;
@@ -39,7 +40,8 @@
         }
         .back-to-shop {
             position: absolute;
-            top: 20px;
+            top: 50%;
+            transform: translateY(-50%);
             left: 5%;
             color: white;
             text-decoration: none;
@@ -285,7 +287,7 @@
 <body>
 
 <div class="simple-header">
-    <a href="shop.html" class="back-to-shop"><i class="fas fa-arrow-left"></i> Back to Shop</a>
+    <a href="#" class="back-to-shop" onclick="goToShop()"><i class="fas fa-arrow-left"></i> Back to Shop</a>
     <h1>BERMACY <span>RW</span></h1>
     <small>Secure Checkout Login</small>
 </div>
@@ -321,7 +323,7 @@
             <form id="loginForm">
                 <div class="input-group input-group-with-icon">
                     <i class="fas fa-envelope"></i>
-                    <input type="email" id="loginEmail" placeholder="Email Address" required>
+                    <input type="email" id="loginEmail" placeholder="Email Address">
                 </div>
                 <div class="input-group input-group-with-icon">
                     <i class="fas fa-phone"></i>
@@ -376,11 +378,7 @@
 </div>
 
 <script>
-    // Cart data - loaded from localStorage (shared with all pages)
-    let cart = [];
-    let currentUser = null;
-    
-    // Product database for price lookup (same as shop.html)
+    // ======================== PRODUCT DATABASE ========================
     const productsData = [
         { id: 1, name: "Paracetamol 500mg", price: 1200 },
         { id: 2, name: "Ibuprofen 400mg", price: 2500 },
@@ -389,10 +387,13 @@
         { id: 5, name: "Omeprazole 20mg", price: 3600 },
         { id: 6, name: "Cetirizine 10mg", price: 1900 },
         { id: 7, name: "Azithromycin 500mg", price: 5200 },
-        { id: 8, name: "Multivitamin Daily", price: 8900 }
+        { id: 8, name: "Multivitamin Daily", price: 8900 },
+        { id: 9, name: "Loperamide 2mg", price: 2100 }
     ];
-    
-    // Load cart from localStorage
+
+    // ======================== CART MANAGEMENT ========================
+    let cart = [];
+
     function loadCart() {
         const saved = localStorage.getItem('bermacy_cart');
         if(saved) {
@@ -401,18 +402,22 @@
                 if(!Array.isArray(cart)) cart = [];
             } catch(e) { cart = []; }
         } else {
-            cart = [];
+            // Demo cart for testing
+            cart = [
+                { id: 1, quantity: 2 },
+                { id: 3, quantity: 1 }
+            ];
+            localStorage.setItem('bermacy_cart', JSON.stringify(cart));
         }
         updateCartPreview();
     }
-    
-    // Update cart preview in login page
+
     function updateCartPreview() {
         const container = document.getElementById('cartItemsPreview');
         const totalContainer = document.getElementById('cartTotalPreview');
         
         if(cart.length === 0) {
-            container.innerHTML = '<div style="text-align:center; padding:10px;">Your cart is empty. <a href="shop.html" style="color:#2c9c8f;">Shop now</a></div>';
+            container.innerHTML = '<div style="text-align:center; padding:10px;">Your cart is empty. <a href="#" onclick="goToShop()" style="color:#2c9c8f;">Shop now</a></div>';
             totalContainer.innerHTML = 'Total: 0 RWF';
             return;
         }
@@ -432,42 +437,39 @@
         });
         container.innerHTML = html;
         totalContainer.innerHTML = `Total: ${total.toLocaleString()} RWF`;
+        return total;
     }
-    
-    // Save cart to localStorage (persist across pages)
+
+    function getCartTotal() {
+        let total = 0;
+        cart.forEach(item => {
+            const product = productsData.find(p => p.id === item.id);
+            if(product) total += product.price * item.quantity;
+        });
+        return total;
+    }
+
     function saveCart() {
         localStorage.setItem('bermacy_cart', JSON.stringify(cart));
     }
-    
-    // User management functions
+
+    // ======================== USER MANAGEMENT ========================
     function getUsers() {
         const users = localStorage.getItem('bermacy_users');
         return users ? JSON.parse(users) : [];
     }
-    
+
     function saveUsers(users) {
         localStorage.setItem('bermacy_users', JSON.stringify(users));
     }
-    
-    function findUserByEmail(email) {
-        const users = getUsers();
-        return users.find(u => u.email === email);
-    }
-    
-    function findUserByMobile(mobile) {
-        const users = getUsers();
-        return users.find(u => u.mobile === mobile);
-    }
-    
+
     function registerUser(name, email, mobile, password) {
         const users = getUsers();
         
-        // Check if email already exists
         if(users.find(u => u.email === email)) {
             return { success: false, message: 'Email already registered. Please login.' };
         }
         
-        // Check if mobile already exists
         if(users.find(u => u.mobile === mobile)) {
             return { success: false, message: 'Mobile number already registered. Please login.' };
         }
@@ -477,9 +479,8 @@
             name: name,
             email: email,
             mobile: mobile,
-            password: password, // In production, this should be hashed
-            createdAt: new Date().toISOString(),
-            cart: cart // Save current cart to user account
+            password: password,
+            createdAt: new Date().toISOString()
         };
         
         users.push(newUser);
@@ -487,10 +488,9 @@
         
         return { success: true, user: newUser };
     }
-    
+
     function loginUser(identifier, password) {
         const users = getUsers();
-        // Check by email or mobile
         const user = users.find(u => (u.email === identifier || u.mobile === identifier) && u.password === password);
         
         if(user) {
@@ -498,7 +498,51 @@
         }
         return { success: false, message: 'Invalid credentials. Please check your email/mobile and password.' };
     }
-    
+
+    // ======================== REDIRECT TO PAYMENT.HTML (FIXED - USING URL PARAMETERS) ========================
+    function redirectToPayment(user) {
+        // Save cart to localStorage before redirect
+        saveCart();
+        
+        // Save user session
+        localStorage.setItem('bermacy_session', JSON.stringify({
+            userId: user.id,
+            name: user.name,
+            email: user.email,
+            mobile: user.mobile,
+            loginTime: new Date().toISOString()
+        }));
+        
+        // Calculate total
+        const total = getCartTotal();
+        
+        // Prepare data for URL parameters
+        const cartDataEncoded = encodeURIComponent(JSON.stringify(cart));
+        const userDataEncoded = encodeURIComponent(JSON.stringify({
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            mobile: user.mobile
+        }));
+        
+        // Build payment.html URL with query parameters
+        const paymentUrl = `payment.html?cart_data=${cartDataEncoded}&user_data=${userDataEncoded}&total_amount=${total}`;
+        
+        // Also store in sessionStorage as backup for payment.html to read
+        sessionStorage.setItem('pendingCart', JSON.stringify(cart));
+        sessionStorage.setItem('pendingUser', JSON.stringify({
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            mobile: user.mobile
+        }));
+        sessionStorage.setItem('pendingTotal', total.toString());
+        
+        // Redirect to payment page
+        window.location.href = paymentUrl;
+    }
+
+    // ======================== UI HELPERS ========================
     function showError(message) {
         const errorDiv = document.getElementById('errorMessage');
         errorDiv.textContent = message;
@@ -507,7 +551,7 @@
             errorDiv.style.display = 'none';
         }, 4000);
     }
-    
+
     function showSuccess(message) {
         const successDiv = document.getElementById('successMessage');
         successDiv.textContent = message;
@@ -516,62 +560,12 @@
             successDiv.style.display = 'none';
         }, 3000);
     }
-    
-    // Redirect to payment.php with cart and user data
-    function redirectToPayment(user) {
-        // Save current cart to localStorage (ensure it's persisted)
-        saveCart();
-        
-        // Save current user session
-        const session = {
-            userId: user.id,
-            name: user.name,
-            email: user.email,
-            mobile: user.mobile,
-            loginTime: new Date().toISOString()
-        };
-        localStorage.setItem('bermacy_session', JSON.stringify(session));
-        
-        // Create form to POST data to payment.php
-        const form = document.createElement('form');
-        form.method = 'POST';
-        form.action = 'payment.html';
-        
-        // Add cart data as JSON
-        const cartInput = document.createElement('input');
-        cartInput.type = 'hidden';
-        cartInput.name = 'cart_data';
-        cartInput.value = JSON.stringify(cart);
-        form.appendChild(cartInput);
-        
-        // Add user data
-        const userInput = document.createElement('input');
-        userInput.type = 'hidden';
-        userInput.name = 'user_data';
-        userInput.value = JSON.stringify({
-            id: user.id,
-            name: user.name,
-            email: user.email,
-            mobile: user.mobile
-        });
-        form.appendChild(userInput);
-        
-        // Add total amount
-        let total = 0;
-        cart.forEach(item => {
-            const product = productsData.find(p => p.id === item.id);
-            if(product) total += product.price * item.quantity;
-        });
-        const totalInput = document.createElement('input');
-        totalInput.type = 'hidden';
-        totalInput.name = 'total_amount';
-        totalInput.value = total;
-        form.appendChild(totalInput);
-        
-        document.body.appendChild(form);
-        form.submit();
+
+    function goToShop() {
+        window.location.href = 'shop.html';
     }
-    
+
+    // ======================== EVENT HANDLERS ========================
     // Tab switching
     const tabBtns = document.querySelectorAll('.tab-btn');
     const loginPanel = document.getElementById('loginPanel');
@@ -656,9 +650,9 @@
             return;
         }
         
-        // Validate mobile format (Rwandan format)
-        const mobileRegex = /^07[0-9]{8}$|^[0-9]{10}$/;
-        if(!mobileRegex.test(mobile) && mobile.length < 10) {
+        // Validate mobile format
+        const mobileRegex = /^07[0-9]{8}$/;
+        if(!mobileRegex.test(mobile)) {
             showError('Please enter a valid mobile number (e.g., 0788123456)');
             return;
         }
@@ -675,31 +669,28 @@
         }
     });
     
-    // Google Login Simulation
+    // Google Auth Simulation
     function handleGoogleAuth() {
-        // Simulate Google OAuth - In production, this would integrate with Google Identity Services
-        const googleUser = {
-            id: 'google_' + Date.now(),
-            name: 'Google User',
-            email: 'user@gmail.com',
-            mobile: '',
-            password: 'google_oauth_token'
-        };
+        const googleEmail = prompt('Enter your Google email address:', 'user@gmail.com');
+        if(!googleEmail) return;
         
-        // Check if user exists
         let users = getUsers();
-        let existingUser = users.find(u => u.email === googleUser.email);
+        let existingUser = users.find(u => u.email === googleEmail);
         
         if(!existingUser) {
-            googleUser.name = prompt('Please enter your full name for your account:', 'John Doe');
-            if(googleUser.name) {
-                users.push(googleUser);
-                saveUsers(users);
-                existingUser = googleUser;
-            } else {
-                showError('Name is required to continue');
-                return;
-            }
+            const googleName = prompt('Please enter your full name:', 'Google User');
+            if(!googleName) return;
+            
+            const newUser = {
+                id: Date.now(),
+                name: googleName,
+                email: googleEmail,
+                mobile: '',
+                password: 'google_oauth_' + Date.now()
+            };
+            users.push(newUser);
+            saveUsers(users);
+            existingUser = newUser;
         }
         
         showSuccess(`Welcome ${existingUser.name}! Redirecting to payment...`);
@@ -719,13 +710,6 @@
     
     // Load cart on page load
     loadCart();
-    
-    // Check if cart is empty and show warning
-    if(cart.length === 0) {
-        setTimeout(() => {
-            showError('Your cart is empty! Please add items to cart before checkout.');
-        }, 500);
-    }
 </script>
 </body>
 </html>
