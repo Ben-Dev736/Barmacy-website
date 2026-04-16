@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>Bermacy RW | Contact Us - Get in Touch</title>
-    <!-- Font Awesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- Google Fonts: Poppins -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         * {
@@ -21,8 +19,6 @@
             color: #1a2c3e;
             line-height: 1.5;
         }
-
-        /* Flash Notification Bar - Social Media Rotator */
         .flash-bar {
             background: #0a2f2e;
             color: #ffecb3;
@@ -49,8 +45,6 @@
             80% { opacity: 1; }
             100% { opacity: 0.6; }
         }
-
-        /* Header & Navigation */
         .top-bar {
             background: #0b3b3f;
             color: white;
@@ -119,8 +113,6 @@
             width: 240px;
             outline: none;
         }
-
-        /* Contact Hero */
         .contact-hero {
             background: linear-gradient(135deg, #cbe7e3, #b3dbd5);
             padding: 40px 5%;
@@ -137,8 +129,6 @@
             margin-left: auto;
             margin-right: auto;
         }
-
-        /* Main Content */
         .contact-container {
             max-width: 1300px;
             margin: 50px auto;
@@ -155,8 +145,6 @@
             flex: 0.8;
             min-width: 260px;
         }
-
-        /* Contact Form Card */
         .contact-card {
             background: white;
             border-radius: 32px;
@@ -216,8 +204,6 @@
             background: #094e4a;
             transform: translateY(-2px);
         }
-
-        /* Info Cards */
         .info-card {
             background: white;
             border-radius: 28px;
@@ -295,8 +281,6 @@
             background: #ffb34720;
             color: #ff8c00;
         }
-
-        /* Map Section */
         .map-section {
             max-width: 1300px;
             margin: 20px auto 50px;
@@ -341,8 +325,6 @@
         .map-placeholder p {
             font-weight: 500;
         }
-
-        /* FAQ Section */
         .faq-section {
             max-width: 1300px;
             margin: 20px auto 50px;
@@ -397,8 +379,6 @@
         .faq-item.active .faq-question i {
             transform: rotate(180deg);
         }
-
-        /* Footer */
         footer {
             background: #082f2e;
             color: #e0f2f0;
@@ -460,8 +440,6 @@
     </style>
 </head>
 <body>
-
-<!-- Flash Bar: Rotating Social Media Notifications -->
 <div class="flash-bar" id="flashBar">
     <div class="flash-content" id="flashMessage">
         <i class="fab fa-instagram"></i> 📢 Follow us on Instagram: @bermacy_rw
@@ -498,7 +476,6 @@
 </section>
 
 <div class="contact-container">
-    <!-- Contact Form Section -->
     <div class="contact-form-section">
         <div class="contact-card">
             <h3><i class="fas fa-envelope-open-text"></i> Send us a Message</h3>
@@ -538,7 +515,6 @@
         </div>
     </div>
 
-    <!-- Contact Info Section -->
     <div class="contact-info-section">
         <div class="info-card">
             <h4><i class="fas fa-map-marker-alt"></i> Visit Us</h4>
@@ -592,8 +568,6 @@
         </div>
     </div>
 </div>
-
-<!-- Map Section -->
 <div class="map-section">
     <div class="map-card">
         <h3><i class="fas fa-map-marked-alt"></i> Our Location</h3>
@@ -607,8 +581,6 @@
         </div>
     </div>
 </div>
-
-<!-- FAQ Section -->
 <div class="faq-section">
     <div class="faq-card">
         <h3><i class="fas fa-question-circle"></i> Frequently Asked Questions</h3>
@@ -698,7 +670,6 @@
 </footer>
 
 <script>
-    // Load cart from localStorage (shared across all pages)
     let cart = [];
     let flashIndex = 0;
     const socialMessages = [
@@ -723,8 +694,6 @@
     }
     setInterval(rotateFlash, 60000); 
     rotateFlash();
-
-    // Cart functions
     function updateCartUI() {
         const cartCountSpan = document.getElementById('cartCountDisplay');
         const totalQty = cart.reduce((s,i) => s + i.quantity, 0);
@@ -757,7 +726,6 @@
         showToast("🛍️ View your cart on the Shop page! Your cart items are saved across pages."); 
     });
 
-    // Contact Form Submission
     const contactForm = document.getElementById('contactForm');
     contactForm?.addEventListener('submit', (e) => {
         e.preventDefault();
@@ -778,7 +746,6 @@
             return;
         }
         
-        // Store contact message in localStorage (for demo)
         const contactMessages = JSON.parse(localStorage.getItem('bermacy_contact_messages') || '[]');
         const newMessage = {
             id: Date.now(),
@@ -792,25 +759,17 @@
         };
         contactMessages.unshift(newMessage);
         localStorage.setItem('bermacy_contact_messages', JSON.stringify(contactMessages));
-        
-        // Reset form
         contactForm.reset();
         
         showToast(`✅ Thank you ${name}! Your message has been sent. We'll respond within 24 hours.`);
-        
-        // Optional: log to console for demo
         console.log('Contact message saved:', newMessage);
     });
-    
-    // FAQ Accordion
     document.querySelectorAll('.faq-item').forEach(item => {
         const question = item.querySelector('.faq-question');
         question.addEventListener('click', () => {
             item.classList.toggle('active');
         });
     });
-    
-    // Search functionality (for demonstration)
     const searchInput = document.getElementById('searchInput');
     searchInput?.addEventListener('input', (e) => {
         const searchTerm = e.target.value.toLowerCase();
