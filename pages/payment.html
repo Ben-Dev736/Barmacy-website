@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Payment - Bermacy RW | Secure Checkout</title>
+    <title>Payment - Bermacy | Secure Checkout</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
@@ -64,7 +64,6 @@
 <body>
 
 <div class="payment-container">
-    <!-- Order Summary -->
     <div class="order-summary">
         <h2><i class="fas fa-shopping-bag"></i> Order Summary</h2>
         <div id="cartItemsList"></div>
@@ -73,8 +72,6 @@
             <p><i class="fas fa-envelope"></i> <strong>Email:</strong> <span id="customerEmail">Loading...</span></p>
         </div>
     </div>
-
-    <!-- Payment Section -->
     <div class="payment-section">
         <h2><i class="fas fa-credit-card"></i> Select Payment Method</h2>
         
@@ -84,8 +81,6 @@
             <button class="method-btn" data-method="card"><i class="fas fa-credit-card"></i> Card</button>
             <button class="method-btn" data-method="paypal"><i class="fab fa-paypal"></i> PayPal</button>
         </div>
-        
-        <!-- MTN Form -->
         <div id="mtnForm" class="payment-form">
             <div class="input-group">
                 <label><i class="fas fa-phone"></i> MTN Mobile Number</label>
@@ -96,8 +91,6 @@
             <button id="confirmMtnBtn" class="confirm-btn" onclick="submitPayment('mtn')">Confirm Payment</button>
             <div id="mtnError" class="error-msg"></div>
         </div>
-        
-        <!-- Airtel Form -->
         <div id="airtelForm" class="payment-form">
             <div class="input-group">
                 <label><i class="fas fa-phone"></i> Airtel Mobile Number</label>
@@ -108,8 +101,6 @@
             <button id="confirmAirtelBtn" class="confirm-btn" onclick="submitPayment('airtel')">Confirm Payment</button>
             <div id="airtelError" class="error-msg"></div>
         </div>
-        
-        <!-- Card Form -->
         <div id="cardForm" class="payment-form">
             <div class="input-group">
                 <label><i class="fas fa-credit-card"></i> Card Number</label>
@@ -130,8 +121,6 @@
             <button id="confirmCardBtn" class="confirm-btn" onclick="submitPayment('card')">Confirm Payment</button>
             <div id="cardError" class="error-msg"></div>
         </div>
-        
-        <!-- PayPal Form -->
         <div id="paypalForm" class="payment-form">
             <div class="input-group">
                 <label><i class="fab fa-paypal"></i> PayPal Email</label>
@@ -148,8 +137,6 @@
         </div>
     </div>
 </div>
-
-<!-- Success Modal (replaces PHP success page) -->
 <div id="successOverlay" class="success-overlay">
     <div class="success-card">
         <div class="success-icon"><i class="fas fa-check-circle"></i></div>
@@ -162,7 +149,6 @@
 </div>
 
 <script>
-    // ======================== PRODUCT DATABASE ========================
     const productsDB = {
         1: { name: "Paracetamol 500mg", price: 1200 },
         2: { name: "Ibuprofen 400mg", price: 2500 },
@@ -174,14 +160,11 @@
         8: { name: "Multivitamin Daily", price: 8900 },
         9: { name: "Loperamide 2mg", price: 2100 }
     };
-
-    // ======================== DATA LOADING (from URL parameters or sessionStorage) ========================
     let cartData = [];
     let userData = {};
     let totalAmount = 0;
 
     function loadDataFromStorageOrUrl() {
-        // Try to get from sessionStorage (set by login.html or previous page)
         const storedCart = sessionStorage.getItem('pendingCart');
         const storedUser = sessionStorage.getItem('pendingUser');
         const storedTotal = sessionStorage.getItem('pendingTotal');
@@ -194,8 +177,6 @@
                 return;
             } catch(e) { console.warn(e); }
         }
-        
-        // Fallback: try to parse from URL parameters (for demo)
         const urlParams = new URLSearchParams(window.location.search);
         const cartParam = urlParams.get('cart_data');
         const userParam = urlParams.get('user_data');
@@ -206,22 +187,19 @@
                 cartData = JSON.parse(decodeURIComponent(cartParam));
                 userData = JSON.parse(decodeURIComponent(userParam));
                 totalAmount = parseFloat(totalParam);
-                // Store for persistence
                 sessionStorage.setItem('pendingCart', JSON.stringify(cartData));
                 sessionStorage.setItem('pendingUser', JSON.stringify(userData));
                 sessionStorage.setItem('pendingTotal', totalAmount.toString());
                 return;
             } catch(e) { console.warn(e); }
         }
-        
-        // DEMO DATA if nothing exists (for testing the page standalone)
         cartData = [
             { id: 1, quantity: 2 },
             { id: 3, quantity: 1 },
             { id: 5, quantity: 1 }
         ];
         userData = { name: "Alex Munezero", email: "alex@example.com" };
-        totalAmount = (1200*2) + 3800 + 3600; // = 2400+3800+3600 = 9800
+        totalAmount = (1200*2) + 3800 + 3600;
         sessionStorage.setItem('pendingCart', JSON.stringify(cartData));
         sessionStorage.setItem('pendingUser', JSON.stringify(userData));
         sessionStorage.setItem('pendingTotal', totalAmount.toString());
@@ -262,11 +240,7 @@
             return m;
         });
     }
-
-    // ======================== EMAIL SIMULATION (internal, console + alert for demo) ========================
-    // In a real scenario this would call an SMTP API. Here we simulate and store/show.
     function sendPaymentConfirmation(email, name, amount, paymentMethod, cartItems, transactionId) {
-        // Build cart summary for email simulation
         let itemsSummary = [];
         for (let item of cartItems) {
             const product = productsDB[item.id];
@@ -286,23 +260,15 @@
         console.log(`To: ${email}`);
         console.log(`Subject: Payment Confirmation - Bermacy RW Order #${transactionId}`);
         console.log(emailContent);
-        
-        // Also store in sessionStorage for demo visibility
         sessionStorage.setItem('lastEmailSimulated', JSON.stringify({
             to: email,
             subject: `Payment Confirmation - Bermacy RW Order #${transactionId}`,
             body: emailContent,
             timestamp: new Date().toISOString()
         }));
-        
-        // Optional: show an alert in demo mode (non-intrusive)
-        // We don't alert to avoid double popup, but we keep the simulation.
         return true;
     }
-
-    // ======================== PAYMENT PROCESSING (frontend logic) ========================
     function processPayment(paymentMethod, details) {
-        // Generate transaction ID similar to PHP: BER + timestamp + random
         const transactionId = "BER" + Date.now() + Math.floor(Math.random() * 9000 + 1000);
         let isValid = false;
         let errorMsg = "";
@@ -348,7 +314,6 @@
         }
         
         if (isValid) {
-            // Send confirmation email (simulated)
             sendPaymentConfirmation(
                 userData.email, 
                 userData.name, 
@@ -360,12 +325,10 @@
                 transactionId
             );
             
-            // Clear session cart after successful payment
             sessionStorage.removeItem('pendingCart');
             sessionStorage.removeItem('pendingUser');
             sessionStorage.removeItem('pendingTotal');
             
-            // Show success modal
             showSuccessModal(transactionId);
             return true;
         } else {
@@ -382,14 +345,12 @@
     }
     
     function goHome() {
-        window.location.href = "../index.html"; // redirect to home page (adjust if needed)
+        window.location.href = "../index.html"; 
     }
     
-    // ======================== UI VERIFICATION & SUBMIT HANDLERS ========================
     let verified = { mtn: false, airtel: false, card: false, paypal: false };
     let verifiedValue = { mtn: '', airtel: '', card: '', cardExpiry: '', cardCvv: '', paypal: '' };
     
-    // Tab switching
     let currentMethod = 'mtn';
     document.querySelectorAll('.method-btn').forEach(btn => {
         btn.addEventListener('click', () => {
@@ -402,7 +363,6 @@
         });
     });
     
-    // MTN
     const mtnInput = document.getElementById('mtnNumber');
     const mtnFlash = document.getElementById('mtnFlash');
     mtnInput.addEventListener('input', function() {
@@ -443,7 +403,6 @@
         document.getElementById('warningMsg').style.display = 'block';
     };
     
-    // Airtel
     const airtelInput = document.getElementById('airtelNumber');
     const airtelFlash = document.getElementById('airtelFlash');
     airtelInput.addEventListener('input', function() {
@@ -484,7 +443,6 @@
         document.getElementById('warningMsg').style.display = 'block';
     };
     
-    // Card
     const cardInput = document.getElementById('cardNumber');
     const cardFlash = document.getElementById('cardFlash');
     cardInput.addEventListener('input', function() {
@@ -547,7 +505,6 @@
         document.getElementById('warningMsg').style.display = 'block';
     };
     
-    // PayPal
     window.verifyPaypal = function() {
         let email = document.getElementById('paypalEmail').value;
         let errorDiv = document.getElementById('paypalError');
@@ -592,7 +549,7 @@
         
         const success = processPayment(method, paymentDetails);
         if(!success) {
-            // error already shown
+           
         }
     };
     
@@ -605,7 +562,6 @@
         }
     });
     
-    // Initial load
     loadDataFromStorageOrUrl();
     renderOrderSummary();
     document.querySelector('.method-btn').classList.add('active');
