@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>Bermacy RW | Health Blog - Wellness Tips & Medicine Guides</title>
-    <!-- Font Awesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- Google Fonts: Poppins -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -22,7 +22,6 @@
             line-height: 1.5;
         }
 
-        /* Flash Notification Bar - Social Media Rotator */
         .flash-bar {
             background: #0a2f2e;
             color: #ffecb3;
@@ -35,22 +34,35 @@
             position: relative;
             z-index: 10;
         }
+
         .flash-content {
             display: inline-block;
             transition: opacity 0.5s ease;
         }
+
         .flash-content i {
             margin: 0 8px;
             color: #ffb347;
         }
+
         @keyframes fadeFlash {
-            0% { opacity: 0.6; }
-            20% { opacity: 1; }
-            80% { opacity: 1; }
-            100% { opacity: 0.6; }
+            0% {
+                opacity: 0.6;
+            }
+
+            20% {
+                opacity: 1;
+            }
+
+            80% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0.6;
+            }
         }
 
-        /* Header & Navigation */
         .top-bar {
             background: #0b3b3f;
             color: white;
@@ -61,14 +73,17 @@
             flex-wrap: wrap;
             gap: 12px;
         }
+
         .logo h1 {
             font-size: 1.7rem;
             letter-spacing: 1px;
             font-weight: 700;
         }
+
         .logo span {
             color: #9effcf;
         }
+
         .cart-icon {
             background: #1e5f5c;
             padding: 8px 18px;
@@ -80,9 +95,11 @@
             font-weight: 600;
             transition: 0.2s;
         }
+
         .cart-icon:hover {
             background: #2c7a76;
         }
+
         .cart-count {
             background: #ffb347;
             color: #1e2f2f;
@@ -90,9 +107,10 @@
             padding: 2px 10px;
             font-weight: bold;
         }
+
         nav {
             background: white;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
             padding: 12px 5%;
             display: flex;
             justify-content: space-between;
@@ -100,6 +118,7 @@
             flex-wrap: wrap;
             gap: 15px;
         }
+
         .nav-links a {
             margin-right: 25px;
             text-decoration: none;
@@ -107,11 +126,14 @@
             font-weight: 500;
             transition: 0.2s;
         }
-        .nav-links a:hover, .nav-links a.active {
+
+        .nav-links a:hover,
+        .nav-links a.active {
             color: #0b3b3f;
             text-decoration: underline;
             font-weight: 600;
         }
+
         .search-box input {
             padding: 10px 18px;
             border: 1px solid #cbd5e1;
@@ -120,16 +142,17 @@
             outline: none;
         }
 
-        /* Blog Hero */
         .blog-hero {
             background: linear-gradient(135deg, #cbe7e3, #b3dbd5);
             padding: 40px 5%;
             text-align: center;
         }
+
         .blog-hero h2 {
             font-size: 2.2rem;
             color: #094c47;
         }
+
         .blog-hero p {
             font-size: 1rem;
             margin-top: 10px;
@@ -138,7 +161,6 @@
             margin-right: auto;
         }
 
-        /* Blog Layout */
         .blog-container {
             max-width: 1300px;
             margin: 50px auto;
@@ -147,26 +169,31 @@
             gap: 40px;
             flex-wrap: wrap;
         }
+
         .blog-main {
             flex: 2;
             min-width: 280px;
         }
+
         .blog-sidebar {
             flex: 1;
             min-width: 260px;
         }
+
         .blog-card {
             background: white;
             border-radius: 28px;
             overflow: hidden;
-            box-shadow: 0 12px 24px rgba(0,0,0,0.05);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.05);
             margin-bottom: 35px;
             transition: transform 0.25s ease;
         }
+
         .blog-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 20px 30px rgba(0,0,0,0.1);
+            box-shadow: 0 20px 30px rgba(0, 0, 0, 0.1);
         }
+
         .blog-img {
             background: #eef3f2;
             padding: 30px;
@@ -174,9 +201,11 @@
             font-size: 3rem;
             color: #1b7e74;
         }
+
         .blog-content {
             padding: 25px;
         }
+
         .blog-category {
             display: inline-block;
             background: #d9f0ec;
@@ -187,12 +216,14 @@
             color: #0b5e5a;
             margin-bottom: 12px;
         }
+
         .blog-title {
             font-size: 1.5rem;
             font-weight: 700;
             margin-bottom: 12px;
             color: #0a3b3a;
         }
+
         .blog-meta {
             display: flex;
             gap: 15px;
@@ -200,11 +231,13 @@
             font-size: 0.8rem;
             margin-bottom: 15px;
         }
+
         .blog-excerpt {
             color: #4a5e5c;
             margin-bottom: 20px;
             line-height: 1.6;
         }
+
         .read-more {
             background: none;
             border: none;
@@ -216,19 +249,21 @@
             gap: 8px;
             font-size: 0.9rem;
         }
+
         .read-more:hover {
             color: #094e4a;
             gap: 12px;
             transition: 0.2s;
         }
-        /* Sidebar */
+
         .sidebar-widget {
             background: white;
             border-radius: 28px;
             padding: 25px;
             margin-bottom: 30px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
         }
+
         .sidebar-widget h3 {
             font-size: 1.3rem;
             margin-bottom: 18px;
@@ -236,12 +271,15 @@
             padding-left: 12px;
             color: #0b3b3f;
         }
+
         .category-list {
             list-style: none;
         }
+
         .category-list li {
             margin-bottom: 12px;
         }
+
         .category-list a {
             text-decoration: none;
             color: #1f5e5a;
@@ -249,10 +287,12 @@
             justify-content: space-between;
             transition: 0.2s;
         }
+
         .category-list a:hover {
             color: #0b3b3f;
             font-weight: 500;
         }
+
         .popular-post {
             display: flex;
             gap: 15px;
@@ -262,10 +302,12 @@
             cursor: pointer;
             transition: 0.2s;
         }
+
         .popular-post:hover {
             background: #f8faf9;
             padding-left: 5px;
         }
+
         .popular-icon {
             font-size: 2rem;
             background: #eef3f2;
@@ -276,15 +318,18 @@
             align-items: center;
             justify-content: center;
         }
+
         .popular-title {
             font-weight: 600;
             font-size: 0.9rem;
         }
+
         .newsletter-input {
             display: flex;
             gap: 10px;
             margin-top: 15px;
         }
+
         .newsletter-input input {
             flex: 1;
             padding: 12px;
@@ -292,6 +337,7 @@
             border: 1px solid #cbd5e1;
             outline: none;
         }
+
         .newsletter-input button {
             background: #0b5e5a;
             color: white;
@@ -301,10 +347,11 @@
             cursor: pointer;
             transition: 0.2s;
         }
+
         .newsletter-input button:hover {
             background: #094e4a;
         }
-        /* Modal for full article */
+
         .modal {
             display: none;
             position: fixed;
@@ -312,14 +359,16 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.7);
+            background: rgba(0, 0, 0, 0.7);
             z-index: 2000;
             justify-content: center;
             align-items: center;
         }
+
         .modal.active {
             display: flex;
         }
+
         .modal-content {
             background: white;
             max-width: 700px;
@@ -330,6 +379,7 @@
             padding: 30px;
             position: relative;
         }
+
         .close-modal {
             position: absolute;
             top: 20px;
@@ -339,29 +389,34 @@
             color: #6c8b89;
             transition: 0.2s;
         }
+
         .close-modal:hover {
             color: #0b3b3f;
         }
+
         .modal-title {
             font-size: 1.8rem;
             color: #0a3b3a;
             margin-bottom: 15px;
             padding-right: 30px;
         }
+
         .modal-body {
             line-height: 1.7;
             color: #2c5a55;
         }
+
         .modal-body p {
             margin-bottom: 15px;
         }
-        /* Footer */
+
         footer {
             background: #082f2e;
             color: #e0f2f0;
             padding: 35px 5% 25px;
             margin-top: 60px;
         }
+
         .footer-content {
             display: flex;
             flex-wrap: wrap;
@@ -369,12 +424,14 @@
             gap: 30px;
             margin-bottom: 30px;
         }
+
         .social-links {
             display: flex;
             flex-wrap: wrap;
             gap: 15px;
             margin-top: 15px;
         }
+
         .social-links a {
             color: white;
             background: #1e6b65;
@@ -388,16 +445,19 @@
             font-size: 1.2rem;
             text-decoration: none;
         }
+
         .social-links a:hover {
             background: #ffb347;
             color: #082f2e;
         }
+
         .copyright {
             text-align: center;
             border-top: 1px solid #2a6b66;
             padding-top: 20px;
             font-size: 0.8rem;
         }
+
         .toast-msg {
             position: fixed;
             bottom: 20px;
@@ -409,182 +469,181 @@
             z-index: 2100;
             font-weight: 500;
         }
+
         @media (max-width: 768px) {
-            .blog-container { flex-direction: column; }
-            .modal-content { padding: 20px; }
+            .blog-container {
+                flex-direction: column;
+            }
+
+            .modal-content {
+                padding: 20px;
+            }
         }
     </style>
 </head>
+
 <body>
-
-<!-- Flash Bar: Rotating Social Media Notifications -->
-<div class="flash-bar" id="flashBar">
-    <div class="flash-content" id="flashMessage">
-        <i class="fab fa-instagram"></i> 📢 Follow us on Instagram: @bermacy_rw
-    </div>
-</div>
-
-<div class="top-bar">
-    <div class="logo">
-        <h1>BERMACY <span>RW</span></h1>
-        <small>💊 Trusted Pharmacy | Health Blog</small>
-    </div>
-    <div class="cart-icon" id="cartIconBtn">
-        <i class="fas fa-shopping-cart"></i> <span>Cart</span>
-        <span class="cart-count" id="cartCountDisplay">0</span>
-    </div>
-</div>
-
-<nav>
-    <div class="nav-links">
-        <a href="../index.html">Home</a>
-        <a href="shop.html">Shop Medicines</a>
-        <a href="blog.html" class="active">Health Blog</a>
-        <a href="prescriptions.html">Prescriptions</a>
-        <a href="contact.html">Contact</a>
-    </div>
-    <div class="search-box">
-        <input type="text" id="blogSearchInput" placeholder="🔍 Search articles...">
-    </div>
-</nav>
-
-<section class="blog-hero">
-    <h2><i class="fas fa-blog"></i> Health & Wellness Blog</h2>
-    <p>Expert advice, medicine guides, and wellness tips from Bermacy RW pharmacists. Stay informed, stay healthy.</p>
-</section>
-
-<div class="blog-container">
-    <!-- Main Blog Posts -->
-    <div class="blog-main" id="blogMain">
-        <!-- dynamic blog posts injected -->
-    </div>
-
-    <!-- Sidebar -->
-    <aside class="blog-sidebar">
-        <div class="sidebar-widget">
-            <h3><i class="fas fa-tags"></i> Categories</h3>
-            <ul class="category-list" id="categoryList">
-                <li><a href="#" data-cat="all">All Articles <span>(0)</span></a></li>
-            </ul>
+    <div class="flash-bar" id="flashBar">
+        <div class="flash-content" id="flashMessage">
+            <i class="fab fa-instagram"></i> 📢 Follow us on Instagram: @bermacy_rw
         </div>
-        <div class="sidebar-widget">
-            <h3><i class="fas fa-fire"></i> Popular Posts</h3>
-            <div id="popularPosts"></div>
+    </div>
+
+    <div class="top-bar">
+        <div class="logo">
+            <h1>BERMACY <span>RW</span></h1>
+            <small>💊 Trusted Pharmacy | Health Blog</small>
         </div>
-        <div class="sidebar-widget">
-            <h3><i class="fas fa-envelope"></i> Newsletter</h3>
-            <p>Get weekly health tips & exclusive offers.</p>
-            <div class="newsletter-input">
-                <input type="email" placeholder="Your email" id="newsletterEmail">
-                <button id="subscribeBtn"><i class="fas fa-paper-plane"></i></button>
+        <div class="cart-icon" id="cartIconBtn">
+            <i class="fas fa-shopping-cart"></i> <span>Cart</span>
+            <span class="cart-count" id="cartCountDisplay">0</span>
+        </div>
+    </div>
+
+    <nav>
+        <div class="nav-links">
+            <a href="../index.html">Home</a>
+            <a href="shop.html">Shop Medicines</a>
+            <a href="blog.html" class="active">Health Blog</a>
+            <a href="prescriptions.html">Prescriptions</a>
+            <a href="contact.html">Contact</a>
+        </div>
+        <div class="search-box">
+            <input type="text" id="blogSearchInput" placeholder="🔍 Search articles...">
+        </div>
+    </nav>
+
+    <section class="blog-hero">
+        <h2><i class="fas fa-blog"></i> Health & Wellness Blog</h2>
+        <p>Expert advice, medicine guides, and wellness tips from Bermacy RW pharmacists. Stay informed, stay healthy.
+        </p>
+    </section>
+
+    <div class="blog-container">
+        <div class="blog-main" id="blogMain">
+        </div>
+        <aside class="blog-sidebar">
+            <div class="sidebar-widget">
+                <h3><i class="fas fa-tags"></i> Categories</h3>
+                <ul class="category-list" id="categoryList">
+                    <li><a href="#" data-cat="all">All Articles <span>(0)</span></a></li>
+                </ul>
+            </div>
+            <div class="sidebar-widget">
+                <h3><i class="fas fa-fire"></i> Popular Posts</h3>
+                <div id="popularPosts"></div>
+            </div>
+            <div class="sidebar-widget">
+                <h3><i class="fas fa-envelope"></i> Newsletter</h3>
+                <p>Get weekly health tips & exclusive offers.</p>
+                <div class="newsletter-input">
+                    <input type="email" placeholder="Your email" id="newsletterEmail">
+                    <button id="subscribeBtn"><i class="fas fa-paper-plane"></i></button>
+                </div>
+            </div>
+            <div class="sidebar-widget">
+                <h3><i class="fas fa-shield-alt"></i> Medicine Safety</h3>
+                <p style="font-size:0.85rem;">Always consult a doctor before taking any medication. Bermacy RW provides
+                    genuine products with professional guidance.</p>
+            </div>
+        </aside>
+    </div>
+    <div id="articleModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div class="modal-title" id="modalTitle"></div>
+            <div class="modal-body" id="modalBody"></div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-about">
+                <h3>Bermacy RW</h3>
+                <p>Rwanda's leading digital pharmacy delivering safe, affordable medicines. Your health is our mission.
+                </p>
+                <div class="social-links">
+                    <a href="https://instagram.com/bermacy_rw" target="_blank"><i class="fab fa-instagram"></i></a>
+                    <a href="https://facebook.com/bermacy_rw" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://linkedin.com/in/bermacy_rw" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="https://whatsapp.com/channel/0029VaBermacy_rw" target="_blank"><i
+                            class="fab fa-whatsapp"></i></a>
+                    <a href="https://twitter.com/bermacy_rw" target="_blank"><i class="fab fa-twitter"></i></a>
+                    <a href="https://youtube.com/c/bermacy_rw" target="_blank"><i class="fab fa-youtube"></i></a>
+                    <a href="https://tiktok.com/@bermacy_rw" target="_blank"><i class="fab fa-tiktok"></i></a>
+                </div>
+            </div>
+            <div class="footer-links">
+                <h4>Quick Links</h4>
+                <ul style="list-style:none;">
+                    <li><a href="index.html" style="color:#cbd5e6;">Home</a></li>
+                    <li><a href="shop.html" style="color:#cbd5e6;">Shop Medicines</a></li>
+                    <li><a href="#" style="color:#cbd5e6;">Delivery Info</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Contact</h4>
+                <ul style="list-style:none;">
+                    <li><i class="fas fa-phone-alt"></i> +250 788 123 456</li>
+                    <li><i class="fas fa-envelope"></i> care@bermacy.rw</li>
+                </ul>
             </div>
         </div>
-        <div class="sidebar-widget">
-            <h3><i class="fas fa-shield-alt"></i> Medicine Safety</h3>
-            <p style="font-size:0.85rem;">Always consult a doctor before taking any medication. Bermacy RW provides genuine products with professional guidance.</p>
+        <div class="copyright">
+            <p>© 2025 Bermacy RW — Empowering health through knowledge & quality medicines. Follow @bermacy_rw on all
+                platforms.</p>
         </div>
-    </aside>
-</div>
+    </footer>
 
-<!-- Modal for Full Article -->
-<div id="articleModal" class="modal">
-    <div class="modal-content">
-        <span class="close-modal">&times;</span>
-        <div class="modal-title" id="modalTitle"></div>
-        <div class="modal-body" id="modalBody"></div>
-    </div>
-</div>
+    <script>
+        const blogPosts = [
+            { id: 1, title: "Understanding Antibiotics: When and How to Use Them Safely", category: "Medicine Guide", date: "April 10, 2025", readTime: "5 min read", excerpt: "Antibiotics are powerful medicines, but misuse leads to resistance. Learn the right way to take antibiotics and why completing the course is vital.", fullContent: "Antibiotics fight bacterial infections, not viruses like cold or flu. Always complete the full prescription even if you feel better. Never share antibiotics. Common side effects include nausea and diarrhea. At Bermacy RW, we ensure genuine antibiotics like Amoxicillin and Azithromycin. Always consult a doctor before use. Misuse can lead to antibiotic resistance, making future infections harder to treat.\n\nKey Takeaways:\n• Take antibiotics exactly as prescribed\n• Never skip doses or stop early\n• Do not save leftovers for future illnesses\n• Probiotics can help maintain gut health during treatment", icon: "💊", popular: true },
+            { id: 2, title: "Boosting Your Immune System Naturally: Vitamins & Lifestyle", category: "Wellness", date: "April 5, 2025", readTime: "7 min read", excerpt: "Discover how Vitamin C, Zinc, and healthy habits strengthen your immunity. Practical tips for Rwandan families.", fullContent: "A strong immune system is your first defense. Key nutrients: Vitamin C (citrus, supplements), Vitamin D (sunlight), Zinc (nuts, seeds). At Bermacy RW, our Vitamin C+Zinc tablets support daily immunity. Also prioritize sleep, hydration, and stress management. Regular exercise boosts circulation of immune cells. Combine with balanced diet for optimal protection.\n\nDaily Immune Boosters:\n• 7-8 hours of quality sleep\n• 30 minutes of moderate exercise\n• Stay hydrated (2-3 liters water)\n• Reduce stress through meditation", icon: "🍊", popular: true },
+            { id: 3, title: "Pain Management: Paracetamol vs Ibuprofen", category: "Medicine Guide", date: "March 28, 2025", readTime: "6 min read", excerpt: "Both relieve pain but work differently. Learn which one suits headaches, fever, inflammation, and when to avoid each.", fullContent: "Paracetamol (Acetaminophen) is best for fever and mild pain, safe for most people but avoid exceeding dose (max 4000mg/day). Ibuprofen is an NSAID, reduces inflammation, great for muscle pain, arthritis. Take with food. Do not combine with blood thinners. Consult doctor if pregnant. At Bermacy RW, we provide quality Paracetamol and Ibuprofen at fair RWF prices.\n\nComparison Guide:\n• Headache: Both work, Paracetamol often preferred\n• Fever: Paracetamol is first choice\n• Muscle pain/inflammation: Ibuprofen better\n• Stomach sensitive: Choose Paracetamol", icon: "💊", popular: false },
+            { id: 4, title: "Stomach Care: Managing Acidity and Heartburn", category: "Digestive Health", date: "March 20, 2025", readTime: "4 min read", excerpt: "Tips to reduce acid reflux and when to use Omeprazole. Lifestyle changes that make a difference.", fullContent: "Heartburn affects many. Avoid spicy/fatty foods, eat small meals, don't lie down after eating. Omeprazole reduces stomach acid, taken before breakfast. For quick relief, antacids help. Chronic symptoms need medical evaluation. Bermacy RW offers genuine Omeprazole and digestive aids.\n\nLifestyle Modifications:\n• Elevate head while sleeping\n• Avoid eating 2-3 hours before bedtime\n• Limit coffee, alcohol, and carbonated drinks\n• Maintain healthy weight", icon: "🌿", popular: true },
+            { id: 5, title: "Allergy Season in Rwanda: Managing Hay Fever", category: "Wellness", date: "March 12, 2025", readTime: "3 min read", excerpt: "Pollen allergies rising? Cetirizine and lifestyle tips to keep sneezing at bay.", fullContent: "Allergy symptoms: sneezing, itchy eyes, runny nose. Cetirizine 10mg provides 24-hour relief. Keep windows closed during high pollen, use saline rinses. Antihistamines work best when taken before exposure. Consult Bermacy RW pharmacists for personalized advice.\n\nAllergy Prevention Tips:\n• Shower after outdoor activities\n• Use air purifiers indoors\n• Wear masks during high pollen days\n• Keep indoor humidity controlled", icon: "🌾", popular: false },
+            { id: 6, title: "Vitamins for Energy: Combat Fatigue Naturally", category: "Nutrition", date: "March 5, 2025", readTime: "5 min read", excerpt: "B-complex, Iron, and Multivitamins to fight tiredness. Boost your daily energy.", fullContent: "Chronic fatigue may signal deficiency. Vitamin B12, Iron, and Multivitamins restore energy. Our Multivitamin Daily at Bermacy RW contains essential minerals. Pair with good sleep and hydration. Always check with doctor before starting supplements.\n\nEnergy-Boosting Nutrients:\n• Vitamin B12: Red blood cell formation\n• Iron: Prevents anemia-related fatigue\n• Magnesium: Muscle function and energy\n• CoQ10: Cellular energy production", icon: "⚡", popular: false }
+        ];
 
-<footer>
-    <div class="footer-content">
-        <div class="footer-about">
-            <h3>Bermacy RW</h3>
-            <p>Rwanda's leading digital pharmacy delivering safe, affordable medicines. Your health is our mission.</p>
-            <div class="social-links">
-                <a href="https://instagram.com/bermacy_rw" target="_blank"><i class="fab fa-instagram"></i></a>
-                <a href="https://facebook.com/bermacy_rw" target="_blank"><i class="fab fa-facebook-f"></i></a>
-                <a href="https://linkedin.com/in/bermacy_rw" target="_blank"><i class="fab fa-linkedin-in"></i></a>
-                <a href="https://whatsapp.com/channel/0029VaBermacy_rw" target="_blank"><i class="fab fa-whatsapp"></i></a>
-                <a href="https://twitter.com/bermacy_rw" target="_blank"><i class="fab fa-twitter"></i></a>
-                <a href="https://youtube.com/c/bermacy_rw" target="_blank"><i class="fab fa-youtube"></i></a>
-                <a href="https://tiktok.com/@bermacy_rw" target="_blank"><i class="fab fa-tiktok"></i></a>
-            </div>
-        </div>
-        <div class="footer-links">
-            <h4>Quick Links</h4>
-            <ul style="list-style:none;">
-                <li><a href="index.html" style="color:#cbd5e6;">Home</a></li>
-                <li><a href="shop.html" style="color:#cbd5e6;">Shop Medicines</a></li>
-                <li><a href="#" style="color:#cbd5e6;">Delivery Info</a></li>
-            </ul>
-        </div>
-        <div class="footer-links">
-            <h4>Contact</h4>
-            <ul style="list-style:none;">
-                <li><i class="fas fa-phone-alt"></i> +250 788 123 456</li>
-                <li><i class="fas fa-envelope"></i> care@bermacy.rw</li>
-            </ul>
-        </div>
-    </div>
-    <div class="copyright">
-        <p>© 2025 Bermacy RW — Empowering health through knowledge & quality medicines. Follow @bermacy_rw on all platforms.</p>
-    </div>
-</footer>
-
-<script>
-    // ---------- BLOG DATABASE ----------
-    const blogPosts = [
-        { id: 1, title: "Understanding Antibiotics: When and How to Use Them Safely", category: "Medicine Guide", date: "April 10, 2025", readTime: "5 min read", excerpt: "Antibiotics are powerful medicines, but misuse leads to resistance. Learn the right way to take antibiotics and why completing the course is vital.", fullContent: "Antibiotics fight bacterial infections, not viruses like cold or flu. Always complete the full prescription even if you feel better. Never share antibiotics. Common side effects include nausea and diarrhea. At Bermacy RW, we ensure genuine antibiotics like Amoxicillin and Azithromycin. Always consult a doctor before use. Misuse can lead to antibiotic resistance, making future infections harder to treat.\n\nKey Takeaways:\n• Take antibiotics exactly as prescribed\n• Never skip doses or stop early\n• Do not save leftovers for future illnesses\n• Probiotics can help maintain gut health during treatment", icon: "💊", popular: true },
-        { id: 2, title: "Boosting Your Immune System Naturally: Vitamins & Lifestyle", category: "Wellness", date: "April 5, 2025", readTime: "7 min read", excerpt: "Discover how Vitamin C, Zinc, and healthy habits strengthen your immunity. Practical tips for Rwandan families.", fullContent: "A strong immune system is your first defense. Key nutrients: Vitamin C (citrus, supplements), Vitamin D (sunlight), Zinc (nuts, seeds). At Bermacy RW, our Vitamin C+Zinc tablets support daily immunity. Also prioritize sleep, hydration, and stress management. Regular exercise boosts circulation of immune cells. Combine with balanced diet for optimal protection.\n\nDaily Immune Boosters:\n• 7-8 hours of quality sleep\n• 30 minutes of moderate exercise\n• Stay hydrated (2-3 liters water)\n• Reduce stress through meditation", icon: "🍊", popular: true },
-        { id: 3, title: "Pain Management: Paracetamol vs Ibuprofen", category: "Medicine Guide", date: "March 28, 2025", readTime: "6 min read", excerpt: "Both relieve pain but work differently. Learn which one suits headaches, fever, inflammation, and when to avoid each.", fullContent: "Paracetamol (Acetaminophen) is best for fever and mild pain, safe for most people but avoid exceeding dose (max 4000mg/day). Ibuprofen is an NSAID, reduces inflammation, great for muscle pain, arthritis. Take with food. Do not combine with blood thinners. Consult doctor if pregnant. At Bermacy RW, we provide quality Paracetamol and Ibuprofen at fair RWF prices.\n\nComparison Guide:\n• Headache: Both work, Paracetamol often preferred\n• Fever: Paracetamol is first choice\n• Muscle pain/inflammation: Ibuprofen better\n• Stomach sensitive: Choose Paracetamol", icon: "💊", popular: false },
-        { id: 4, title: "Stomach Care: Managing Acidity and Heartburn", category: "Digestive Health", date: "March 20, 2025", readTime: "4 min read", excerpt: "Tips to reduce acid reflux and when to use Omeprazole. Lifestyle changes that make a difference.", fullContent: "Heartburn affects many. Avoid spicy/fatty foods, eat small meals, don't lie down after eating. Omeprazole reduces stomach acid, taken before breakfast. For quick relief, antacids help. Chronic symptoms need medical evaluation. Bermacy RW offers genuine Omeprazole and digestive aids.\n\nLifestyle Modifications:\n• Elevate head while sleeping\n• Avoid eating 2-3 hours before bedtime\n• Limit coffee, alcohol, and carbonated drinks\n• Maintain healthy weight", icon: "🌿", popular: true },
-        { id: 5, title: "Allergy Season in Rwanda: Managing Hay Fever", category: "Wellness", date: "March 12, 2025", readTime: "3 min read", excerpt: "Pollen allergies rising? Cetirizine and lifestyle tips to keep sneezing at bay.", fullContent: "Allergy symptoms: sneezing, itchy eyes, runny nose. Cetirizine 10mg provides 24-hour relief. Keep windows closed during high pollen, use saline rinses. Antihistamines work best when taken before exposure. Consult Bermacy RW pharmacists for personalized advice.\n\nAllergy Prevention Tips:\n• Shower after outdoor activities\n• Use air purifiers indoors\n• Wear masks during high pollen days\n• Keep indoor humidity controlled", icon: "🌾", popular: false },
-        { id: 6, title: "Vitamins for Energy: Combat Fatigue Naturally", category: "Nutrition", date: "March 5, 2025", readTime: "5 min read", excerpt: "B-complex, Iron, and Multivitamins to fight tiredness. Boost your daily energy.", fullContent: "Chronic fatigue may signal deficiency. Vitamin B12, Iron, and Multivitamins restore energy. Our Multivitamin Daily at Bermacy RW contains essential minerals. Pair with good sleep and hydration. Always check with doctor before starting supplements.\n\nEnergy-Boosting Nutrients:\n• Vitamin B12: Red blood cell formation\n• Iron: Prevents anemia-related fatigue\n• Magnesium: Muscle function and energy\n• CoQ10: Cellular energy production", icon: "⚡", popular: false }
-    ];
-
-    let cart = [];
-    let flashIndex = 0;
-    const socialMessages = [
-        { icon: "fab fa-instagram", text: "📸 Instagram: @bermacy_rw — Daily health tips & offers!" },
-        { icon: "fab fa-facebook-f", text: "👍 Facebook: @bermacy_rw — Join our community!" },
-        { icon: "fab fa-linkedin-in", text: "🔗 LinkedIn: bermacy_rw — Pharma insights" },
-        { icon: "fab fa-whatsapp", text: "📱 WhatsApp Channel: bermacy_rw — Get alerts" },
-        { icon: "fab fa-twitter", text: "🐦 X (Twitter): @bermacy_rw — Latest updates" },
-        { icon: "fab fa-youtube", text: "🎥 YouTube: bermacy_rw — Health videos" },
-        { icon: "fab fa-tiktok", text: "🎵 TikTok: @bermacy_rw — Fun pharma content" }
-    ];
-    function rotateFlash() { const flashDiv = document.getElementById('flashMessage'); if(flashDiv) { const msg = socialMessages[flashIndex % socialMessages.length]; flashDiv.innerHTML = `<i class="${msg.icon}"></i> ${msg.text}`; flashDiv.style.animation = 'fadeFlash 0.5s'; setTimeout(() => { if(flashDiv) flashDiv.style.animation = ''; }, 500); flashIndex++; } }
-    setInterval(rotateFlash, 60000); rotateFlash();
-
-    // Cart functions (shared across all pages via localStorage)
-    function updateCartUI() {
-        const cartCountSpan = document.getElementById('cartCountDisplay');
-        const totalQty = cart.reduce((s,i) => s + i.quantity, 0);
-        if(cartCountSpan) cartCountSpan.innerText = totalQty;
-    }
-    function loadCart() { const saved = localStorage.getItem('bermacy_cart'); if(saved) { try { cart = JSON.parse(saved); if(!Array.isArray(cart)) cart=[]; } catch(e){cart=[];} } else cart=[]; updateCartUI(); }
-    function saveCart() { localStorage.setItem('bermacy_cart', JSON.stringify(cart)); }
-    function showToast(msg) { let toast = document.querySelector('.toast-msg'); if(!toast) { toast = document.createElement('div'); toast.className='toast-msg'; document.body.appendChild(toast); } toast.innerText = msg; toast.style.opacity='1'; clearTimeout(window.toastTimeout); window.toastTimeout = setTimeout(() => { if(toast) toast.style.opacity='0'; }, 2200); }
-    
-    document.getElementById('cartIconBtn')?.addEventListener('click', () => { showToast("🛍️ View your cart on the Shop page! Your cart items are saved across pages."); });
-
-    // Render blog posts with search & category filter
-    let activeCategory = "all";
-    let searchQuery = "";
-
-    function renderBlogPosts() {
-        let filtered = [...blogPosts];
-        if(activeCategory !== "all") filtered = filtered.filter(p => p.category === activeCategory);
-        if(searchQuery.trim() !== "") {
-            const sq = searchQuery.toLowerCase();
-            filtered = filtered.filter(p => p.title.toLowerCase().includes(sq) || p.excerpt.toLowerCase().includes(sq) || p.category.toLowerCase().includes(sq));
+        let cart = [];
+        let flashIndex = 0;
+        const socialMessages = [
+            { icon: "fab fa-instagram", text: "📸 Instagram: @bermacy_rw — Daily health tips & offers!" },
+            { icon: "fab fa-facebook-f", text: "👍 Facebook: @bermacy_rw — Join our community!" },
+            { icon: "fab fa-linkedin-in", text: "🔗 LinkedIn: bermacy_rw — Pharma insights" },
+            { icon: "fab fa-whatsapp", text: "📱 WhatsApp Channel: bermacy_rw — Get alerts" },
+            { icon: "fab fa-twitter", text: "🐦 X (Twitter): @bermacy_rw — Latest updates" },
+            { icon: "fab fa-youtube", text: "🎥 YouTube: bermacy_rw — Health videos" },
+            { icon: "fab fa-tiktok", text: "🎵 TikTok: @bermacy_rw — Fun pharma content" }
+        ];
+        function rotateFlash() { const flashDiv = document.getElementById('flashMessage'); if (flashDiv) { const msg = socialMessages[flashIndex % socialMessages.length]; flashDiv.innerHTML = `<i class="${msg.icon}"></i> ${msg.text}`; flashDiv.style.animation = 'fadeFlash 0.5s'; setTimeout(() => { if (flashDiv) flashDiv.style.animation = ''; }, 500); flashIndex++; } }
+        setInterval(rotateFlash, 60000); rotateFlash();
+        function updateCartUI() {
+            const cartCountSpan = document.getElementById('cartCountDisplay');
+            const totalQty = cart.reduce((s, i) => s + i.quantity, 0);
+            if (cartCountSpan) cartCountSpan.innerText = totalQty;
         }
-        const container = document.getElementById('blogMain');
-        if(!container) return;
-        if(filtered.length === 0) {
-            container.innerHTML = `<div style="background:white; border-radius:28px; padding:50px; text-align:center;">📭 No blog posts found. Try different search or category.</div>`;
-        } else {
-            container.innerHTML = filtered.map(post => `
+        function loadCart() { const saved = localStorage.getItem('bermacy_cart'); if (saved) { try { cart = JSON.parse(saved); if (!Array.isArray(cart)) cart = []; } catch (e) { cart = []; } } else cart = []; updateCartUI(); }
+        function saveCart() { localStorage.setItem('bermacy_cart', JSON.stringify(cart)); }
+        function showToast(msg) { let toast = document.querySelector('.toast-msg'); if (!toast) { toast = document.createElement('div'); toast.className = 'toast-msg'; document.body.appendChild(toast); } toast.innerText = msg; toast.style.opacity = '1'; clearTimeout(window.toastTimeout); window.toastTimeout = setTimeout(() => { if (toast) toast.style.opacity = '0'; }, 2200); }
+
+        document.getElementById('cartIconBtn')?.addEventListener('click', () => { showToast("🛍️ View your cart on the Shop page! Your cart items are saved across pages."); });
+        let activeCategory = "all";
+        let searchQuery = "";
+
+        function renderBlogPosts() {
+            let filtered = [...blogPosts];
+            if (activeCategory !== "all") filtered = filtered.filter(p => p.category === activeCategory);
+            if (searchQuery.trim() !== "") {
+                const sq = searchQuery.toLowerCase();
+                filtered = filtered.filter(p => p.title.toLowerCase().includes(sq) || p.excerpt.toLowerCase().includes(sq) || p.category.toLowerCase().includes(sq));
+            }
+            const container = document.getElementById('blogMain');
+            if (!container) return;
+            if (filtered.length === 0) {
+                container.innerHTML = `<div style="background:white; border-radius:28px; padding:50px; text-align:center;">📭 No blog posts found. Try different search or category.</div>`;
+            } else {
+                container.innerHTML = filtered.map(post => `
                 <div class="blog-card" data-id="${post.id}">
                     <div class="blog-img">${post.icon} <span style="font-size:0.8rem;">📖</span></div>
                     <div class="blog-content">
@@ -596,94 +655,88 @@
                     </div>
                 </div>
             `).join('');
-            document.querySelectorAll('.read-more').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const id = parseInt(btn.dataset.id);
-                    const post = blogPosts.find(p => p.id === id);
-                    if(post) openModal(post);
+                document.querySelectorAll('.read-more').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const id = parseInt(btn.dataset.id);
+                        const post = blogPosts.find(p => p.id === id);
+                        if (post) openModal(post);
+                    });
                 });
-            });
-        }
-        updateCategoryCounts();
-        renderPopularPosts();
-    }
-
-    function openModal(post) {
-        const modal = document.getElementById('articleModal');
-        document.getElementById('modalTitle').innerText = post.title;
-        document.getElementById('modalBody').innerHTML = `<p><strong>${post.category}</strong> | ${post.date} | ${post.readTime}</p><p>${post.fullContent.replace(/\n/g, '<br>')}</p><p style="margin-top:20px; padding:15px; background:#eef3f2; border-radius:20px;"><i class="fas fa-store"></i> <strong>Shop Related Medicines:</strong> Visit our <a href="shop.html" style="color:#0b5e5a;">Shop Page</a> to purchase medicines mentioned in this article at great RWF prices.</p>`;
-        modal.classList.add('active');
-    }
-
-    function updateCategoryCounts() {
-        const cats = {};
-        blogPosts.forEach(p => { cats[p.category] = (cats[p.category] || 0) + 1; });
-        const catList = document.getElementById('categoryList');
-        if(catList) {
-            let html = `<li><a href="#" data-cat="all">All Articles <span>(${blogPosts.length})</span></a></li>`;
-            for(let [cat, count] of Object.entries(cats)) {
-                html += `<li><a href="#" data-cat="${cat}">${cat} <span>(${count})</span></a></li>`;
             }
-            catList.innerHTML = html;
-            document.querySelectorAll('.category-list a').forEach(link => {
-                link.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    activeCategory = link.dataset.cat;
-                    renderBlogPosts();
-                });
-            });
+            updateCategoryCounts();
+            renderPopularPosts();
         }
-    }
 
-    function renderPopularPosts() {
-        const popular = blogPosts.filter(p => p.popular === true).slice(0, 3);
-        const container = document.getElementById('popularPosts');
-        if(container) {
-            container.innerHTML = popular.map(p => `
+        function openModal(post) {
+            const modal = document.getElementById('articleModal');
+            document.getElementById('modalTitle').innerText = post.title;
+            document.getElementById('modalBody').innerHTML = `<p><strong>${post.category}</strong> | ${post.date} | ${post.readTime}</p><p>${post.fullContent.replace(/\n/g, '<br>')}</p><p style="margin-top:20px; padding:15px; background:#eef3f2; border-radius:20px;"><i class="fas fa-store"></i> <strong>Shop Related Medicines:</strong> Visit our <a href="shop.html" style="color:#0b5e5a;">Shop Page</a> to purchase medicines mentioned in this article at great RWF prices.</p>`;
+            modal.classList.add('active');
+        }
+
+        function updateCategoryCounts() {
+            const cats = {};
+            blogPosts.forEach(p => { cats[p.category] = (cats[p.category] || 0) + 1; });
+            const catList = document.getElementById('categoryList');
+            if (catList) {
+                let html = `<li><a href="#" data-cat="all">All Articles <span>(${blogPosts.length})</span></a></li>`;
+                for (let [cat, count] of Object.entries(cats)) {
+                    html += `<li><a href="#" data-cat="${cat}">${cat} <span>(${count})</span></a></li>`;
+                }
+                catList.innerHTML = html;
+                document.querySelectorAll('.category-list a').forEach(link => {
+                    link.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        activeCategory = link.dataset.cat;
+                        renderBlogPosts();
+                    });
+                });
+            }
+        }
+
+        function renderPopularPosts() {
+            const popular = blogPosts.filter(p => p.popular === true).slice(0, 3);
+            const container = document.getElementById('popularPosts');
+            if (container) {
+                container.innerHTML = popular.map(p => `
                 <div class="popular-post" data-id="${p.id}">
                     <div class="popular-icon">${p.icon}</div>
                     <div class="popular-title">${p.title}</div>
                 </div>
             `).join('');
-            document.querySelectorAll('.popular-post').forEach(el => {
-                el.addEventListener('click', () => {
-                    const id = parseInt(el.dataset.id);
-                    const post = blogPosts.find(p => p.id === id);
-                    if(post) openModal(post);
+                document.querySelectorAll('.popular-post').forEach(el => {
+                    el.addEventListener('click', () => {
+                        const id = parseInt(el.dataset.id);
+                        const post = blogPosts.find(p => p.id === id);
+                        if (post) openModal(post);
+                    });
                 });
-            });
+            }
         }
-    }
+        document.getElementById('blogSearchInput')?.addEventListener('input', (e) => {
+            searchQuery = e.target.value;
+            renderBlogPosts();
+        });
+        document.getElementById('subscribeBtn')?.addEventListener('click', () => {
+            const email = document.getElementById('newsletterEmail').value;
+            if (email && email.includes('@') && email.includes('.')) {
+                showToast(`✅ Subscribed! ${email} will receive health updates.`);
+                document.getElementById('newsletterEmail').value = '';
+                localStorage.setItem('bermacy_newsletter', email);
+            } else { showToast("Please enter a valid email address."); }
+        });
+        const modal = document.getElementById('articleModal');
+        document.querySelector('.close-modal')?.addEventListener('click', () => modal.classList.remove('active'));
+        modal?.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('active'); });
 
-    // Search
-    document.getElementById('blogSearchInput')?.addEventListener('input', (e) => {
-        searchQuery = e.target.value;
+        const savedEmail = localStorage.getItem('bermacy_newsletter');
+        if (savedEmail && document.getElementById('newsletterEmail')) {
+            document.getElementById('newsletterEmail').value = savedEmail;
+        }
+
+        loadCart();
         renderBlogPosts();
-    });
-
-    // Newsletter subscribe
-    document.getElementById('subscribeBtn')?.addEventListener('click', () => {
-        const email = document.getElementById('newsletterEmail').value;
-        if(email && email.includes('@') && email.includes('.')) {
-            showToast(`✅ Subscribed! ${email} will receive health updates.`);
-            document.getElementById('newsletterEmail').value = '';
-            localStorage.setItem('bermacy_newsletter', email);
-        } else { showToast("Please enter a valid email address."); }
-    });
-
-    // Modal close
-    const modal = document.getElementById('articleModal');
-    document.querySelector('.close-modal')?.addEventListener('click', () => modal.classList.remove('active'));
-    modal?.addEventListener('click', (e) => { if(e.target === modal) modal.classList.remove('active'); });
-
-    // Load saved newsletter email if exists
-    const savedEmail = localStorage.getItem('bermacy_newsletter');
-    if(savedEmail && document.getElementById('newsletterEmail')) {
-        document.getElementById('newsletterEmail').value = savedEmail;
-    }
-
-    loadCart();
-    renderBlogPosts();
-</script>
+    </script>
 </body>
+
 </html>
